@@ -89,6 +89,28 @@ namespace RusticiSoftware.HostedEngine.Client
             request.Parameters.Add("learnerid", learnerId);
             request.CallService("rustici.registration.createRegistration");
         }
+
+		/// <summary>
+        /// Create a new Registration (Instance of a user taking a course)
+        /// </summary>
+        /// <param name="registrationId">Unique Identifier for the registration</param>
+        /// <param name="courseId">Unique Identifier for the course</param>
+        /// <param name="learnerId">Unique Identifier for the learner</param>
+        /// <param name="learnerFirstName">Learner's first name</param>
+        /// <param name="learnerLastName">Learner's last name</param>
+        /// <param name="email">Learner's email</param>
+        public void CreateRegistration(string registrationId, string courseId, string learnerId,
+            string learnerFirstName, string learnerLastName, string email)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("regid", registrationId);
+            request.Parameters.Add("courseid", courseId);
+            request.Parameters.Add("fname", learnerFirstName);
+            request.Parameters.Add("lname", learnerLastName);
+            request.Parameters.Add("learnerid", learnerId);
+			request.Parameters.Add("email", email);
+            request.CallService("rustici.registration.createRegistration");
+        }
            
         /// <summary>
         /// Creates a new instance of an existing registration.  This essentially creates a
