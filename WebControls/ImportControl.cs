@@ -47,6 +47,13 @@ namespace RusticiSoftware.HostedEngine.Client.WebControls
     /// will end before any OnLoad events are even raised). But to ensure against unexpected behavior,
     /// it's recommended to embed the control on a page that doesn't do much of any other processing itself.
     /// 
+    /// FinPa Update: 
+    /// 1. Remove writer.Indent
+    /// 2. Remove leading spaces/tabs for clientScript
+    /// 3. Line 410: add class "actionText" for the action text, instead of hard coded style
+    /// 4. Line 421: replace "Loading course" with "Loading"
+    /// 5. Line 159-165, 386-389: Add UploadFilename property support through query string
+    /// 6. Line 438: add span tag to show alert better
     /// </remarks>
     public class ImportControl : Control
     {
@@ -148,6 +155,14 @@ namespace RusticiSoftware.HostedEngine.Client.WebControls
         {
             get { return _renderErrorMessages; }
             set { _renderErrorMessages = value; }
+        }
+
+        /// <summary>
+        /// FinPa Update: return uploaded filename for information
+        /// </summary>
+        public string UploadFilename
+        {
+            get { return this.Page.Request.QueryString["UploadFilename"]; }
         }
 
         public event EventHandler Success;
@@ -328,109 +343,107 @@ namespace RusticiSoftware.HostedEngine.Client.WebControls
             string actionText = this.IsUpdate ? "Upload file(s) for update" : "Import .zip package";
 
             string clientScript =
-                @"<script type='text/javascript'>
-                    function " + this.ClientID + @"_Ajax (success, error) {
-	                    this._req = null;  
- 	                    this._sc = function() {
-		                    if (_req.readyState == 4) {
-                                    if(_req.status == 200){
-				                        success(_req.responseText);
-                                    } else {
-                                        error(_req.responseText);
-                                    }
-			                    }
-	                    };
-	                    this.ajaxRequest = function(meth, url, as) {
-		                    _req = window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
-		                    _req.onreadystatechange = this._sc;
-		                    _req.open(meth, url, as); 
-		                    _req.send('');
-	                    };
-                    }
+@"<script type='text/javascript'>
+function " + this.ClientID + @"_Ajax (success, error) {
+	this._req = null;  
+ 	this._sc = function() {
+		if (_req.readyState == 4) {
+                if(_req.status == 200){
+                    success(_req.responseText);
+                } else {
+                    error(_req.responseText);
+                }
+		}
+	};
+	this.ajaxRequest = function(meth, url, as) {
+		_req = window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
+		_req.onreadystatechange = this._sc;
+		_req.open(meth, url, as); 
+		_req.send('');
+	};
+}
+function " + this.ClientID + @"_Validate() {
+    var fileToImportVal = document.getElementById('" + this.ClientID + @"_fileToImport').value;
+    var isUpdate = " + this.IsUpdate.ToString().ToLower() + @";
 
-                    function " + this.ClientID + @"_Validate() {
-                        var fileToImportVal = document.getElementById('" + this.ClientID + @"_fileToImport').value;
-                        var isUpdate = " + this.IsUpdate.ToString().ToLower() + @";
-
-                        if (fileToImportVal.length == 0) {
-                            alert('Please select a file to import');
-                            return false;
-                        } 
-                        else if (!isUpdate && fileToImportVal.toLowerCase().indexOf('.zip') < 0) {
-                            alert('Please select a .zip file to import.  Selected file does not have an extension of \'.zip\'.');
-                            return false;
-                        } 
-                        else {
-                            document.getElementById('" + this.ClientID + @"_importFormDiv').style.display = 'none'; 
-                            document.getElementById('" + this.ClientID + @"_uploadingCourse').style.display = 'block';
-                            return true;
-                        }
-                    }
-
-                    function " + this.ClientID + @"_Submit() {
-                        if(" + this.ClientID + @"_Validate()) {
-                            var importFormAjax = new " + this.ClientID + "_Ajax(" + this.ClientID + @"_DataRecieved, " 
-                                                                                  + this.ClientID + @"_Error);
-                            importFormAjax.ajaxRequest('GET', '" +
-                                   currentUrl + (currentUrl.Contains("?") ? "&" : "?") +
-                                   @"GetUploadUrl=true', true);
-                        }
-                        return false;
-                    }
-
-                    function " + this.ClientID + @"_DataRecieved(data) {
-                        if(data.indexOf('error:') >= 0){
-                            " + this.ClientID + @"_Error(data.substring(6));
-                            return false;
-                        }
-                        var importForm = document.getElementById('" + this.ClientID + @"');
-                        importForm.action = data;
-                        importForm.submit();
-                    }
-                    function " + this.ClientID + @"_Error(data) {
-                        document.getElementById('" + this.ClientID + @"_importFormDiv').style.display = 'block'; 
-                        document.getElementById('" + this.ClientID + @"_uploadingCourse').style.display = 'none';
-                        alert('An error occurred while uploading the file: ' + data);
-                    }
-                </script>";
+    if (fileToImportVal.length == 0) {
+        alert('Please select a file to import');
+        return false;
+    } 
+    else if (!isUpdate && fileToImportVal.toLowerCase().indexOf('.zip') < 0) {
+        alert('Please select a .zip file to import.  Selected file does not have an extension of \'.zip\'.');
+        return false;
+    } 
+    else {
+        document.getElementById('" + this.ClientID + @"_importFormDiv').style.display = 'none'; 
+        document.getElementById('" + this.ClientID + @"_uploadingCourse').style.display = 'block';
+        return true;
+    }
+}
+function " + this.ClientID + @"_Submit() {
+    if(" + this.ClientID + @"_Validate()) {
+        var importFormAjax = new " + this.ClientID + "_Ajax(" + this.ClientID + @"_DataRecieved, " 
+                                                                + this.ClientID + @"_Error);
+        var fileToImportVal = document.getElementById('" + this.ClientID + @"_fileToImport').value;
+        importFormAjax.ajaxRequest('GET', '" +
+                currentUrl + (currentUrl.Contains("?") ? "&" : "?") +
+                @"GetUploadUrl=true&UploadFilename=' + escape(fileToImportVal), true);
+    }
+    return false;
+}
+function " + this.ClientID + @"_DataRecieved(data) {
+    if(data.indexOf('error:') >= 0){
+        " + this.ClientID + @"_Error(data.substring(6));
+        return false;
+    }
+    var importForm = document.getElementById('" + this.ClientID + @"');
+    importForm.action = data;
+    importForm.submit();
+}
+function " + this.ClientID + @"_Error(data) {
+    document.getElementById('" + this.ClientID + @"_importFormDiv').style.display = 'block'; 
+    document.getElementById('" + this.ClientID + @"_uploadingCourse').style.display = 'none';
+    alert('An error occurred while uploading the file: ' + data);
+}
+</script>";
 
             writer.Write(clientScript);
 
             writer.WriteLine("<div id=\"" + this.ClientID + "_importFormDiv\" class=\"importFormDiv\">");
 
-            writer.Indent++;
+            //writer.Indent++;
 
             writer.WriteLine("<form id=\"" + this.ClientID + "\" class=\"importForm\" method=\"post\"" +
                              " onsubmit=\"return " + this.ClientID + "_Submit();\" enctype=\"multipart/form-data\">");
-            writer.Indent++;
+            //writer.Indent++;
 
             writer.WriteLine("<input type=\"file\" width=\"20\" id=\"" + this.ClientID + "_fileToImport\" name=\"fileToImport\" >");
             writer.WriteLine("<input type=\"submit\" id=\"" + this.ClientID + "_importBtn\" name=\"importBtn\" value=\"" + buttonText + "\" >");
-            writer.WriteLine("<div style=\"font-size:smaller\">" + actionText + "</div>");
+            writer.WriteLine("<div class=\"actionText\">" + actionText + "</div>");
 
-            writer.Indent--;
+            //writer.Indent--;
 
             writer.WriteLine("</form>");
 
-            writer.Indent--;
+            //writer.Indent--;
 
             writer.WriteLine("</div>");
 
             writer.WriteLine("<div id=\"" + this.ClientID + "_uploadingCourse\" class=\"uploadingCourseDiv\" style=\"font-size: 10pt; font-weight: bold; display: none\">");
-            writer.WriteLine("Uploading Course...");
+            writer.WriteLine("Uploading ......");
             writer.WriteLine("</div>");
 
             if (this.RenderErrorMessages && !String.IsNullOrEmpty(ErrorMessage)) {
                 writer.WriteLine("<div id=\"" + this.ClientID + "_importErrors\" class=\"importErrors\" " +
                                             (InlineStylesEnabled ? "style=\"font-color:#880000\"" : "") + ">");
-                writer.WriteLine(ErrorMessage);
+                writer.WriteLine("<span>" + ErrorMessage + "</span>");    // FLM Update: add span tag
                 writer.WriteLine("</div>");
             }
 
             if (this.RenderImportResults && ImportResults != null && ImportResults.Count > 0 && ImportResults[0].WasSuccessful) {
                 ImportResult result = ImportResults[0];
                 writer.WriteLine("<div id=\"" + this.ClientID + "_importMessages\" class=\"importMessages\">");
-                writer.Indent++;
+                //writer.Indent++;
                 
                 writer.WriteLine("<div class=\"importResultTitle\" " +
                                     (InlineStylesEnabled ? "style=\"font-weight:bold\"" : "") + 
@@ -448,14 +461,14 @@ namespace RusticiSoftware.HostedEngine.Client.WebControls
                     writer.WriteLine("<ul class=\"importParserWarningList\" " +
                                         (InlineStylesEnabled ? "style=\"margin-left:10px\"" : "") + ">");
 
-                    writer.Indent++;
+                    //writer.Indent++;
                     foreach (String warning in result.ParserWarnings) {
                         writer.WriteLine("<li class=\"importParserWarning\">" + warning + "</li>");
                     }
-                    writer.Indent--;
+                    //writer.Indent--;
                     writer.WriteLine("</ul>");
                 }
-                writer.Indent--;
+                //writer.Indent--;
                 writer.WriteLine("</div>");
             }
         }
