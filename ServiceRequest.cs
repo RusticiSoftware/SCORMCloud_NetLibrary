@@ -261,6 +261,7 @@ namespace RusticiSoftware.HostedEngine.Client
             parameterMap.Add("method", methodName);
             parameterMap.Add("appid", configuration.AppId);
             parameterMap.Add("ts", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
+			parameterMap.Add("applib", "net");
             foreach(string key in methodParameters.Keys)
             {
                 parameterMap.Add(key, methodParameters[key]);
