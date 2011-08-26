@@ -49,8 +49,9 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <param name="scormEngineServiceUrl">URL to the service, ex: http://services.scorm.com/EngineWebServices</param>
         /// <param name="appId">The Application ID obtained by registering with the SCORM Engine Service</param>
         /// <param name="securityKey">The security key (password) linked to the application ID</param>
-        public ScormEngineService(string scormEngineServiceUrl, string appId, string securityKey) : 
-            this(new Configuration(scormEngineServiceUrl, appId, securityKey))
+	    /// <param name="origin">The origin string that defines the organization, application name and version</param>
+        public ScormEngineService(string scormEngineServiceUrl, string appId, string securityKey, string origin) : 
+            this(new Configuration(scormEngineServiceUrl, appId, securityKey, origin))
         {
         }
 

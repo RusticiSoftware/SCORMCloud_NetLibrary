@@ -260,6 +260,7 @@ namespace RusticiSoftware.HostedEngine.Client
             IDictionary<string, object> parameterMap = new Dictionary<string, object>();
             parameterMap.Add("method", methodName);
             parameterMap.Add("appid", configuration.AppId);
+			parameterMap.Add("origin", configuration.Origin);
             parameterMap.Add("ts", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
 			parameterMap.Add("applib", "net");
             foreach(string key in methodParameters.Keys)

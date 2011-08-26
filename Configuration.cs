@@ -34,9 +34,10 @@ namespace RusticiSoftware.HostedEngine.Client
     /// </summary>
     public class Configuration
     {
-        private string appId = null;
-        private string securityKey = null;
-        private string scormEngineServiceUrl = null;
+        private string appId;
+        private string securityKey;
+        private string scormEngineServiceUrl;
+    	private string origin = "rusticisoftware.netlibrary.1.1.2";
 
         /// <summary>
         /// Single constuctor that contains the required properties
@@ -44,11 +45,13 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <param name="scormEngineServiceUrl">URL to the service, ex: http://services.scorm.com/EngineWebServices</param>
         /// <param name="appId">The Application ID obtained by registering with the SCORM Engine Service</param>
         /// <param name="securityKey">The security key (password) linked to the application ID</param>
-        public Configuration(string scormEngineServiceUrl, string appId, string securityKey)
+        /// <param name="origin">The origin string that defines the organization, application name and version</param>
+        public Configuration(string scormEngineServiceUrl, string appId, string securityKey, string origin)
         {
             this.appId = appId;
             this.securityKey = securityKey;
             this.scormEngineServiceUrl = scormEngineServiceUrl;
+        	this.origin = origin;
         }
 
         /// <summary>
@@ -77,5 +80,15 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return scormEngineServiceUrl; }
             set { scormEngineServiceUrl = value; }
         }
+
+		/// <summary>
+		/// The origin string that defines the organization, application name and version
+		/// of the software accessing the Cloud service.
+		/// </summary>
+    	public string Origin
+    	{
+    		get { return origin; }
+			set { origin = value; }
+    	}
     }
 }
