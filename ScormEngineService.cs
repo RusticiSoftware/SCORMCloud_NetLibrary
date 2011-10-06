@@ -36,6 +36,7 @@ namespace RusticiSoftware.HostedEngine.Client
     {
         private Configuration configuration = null;
         private CourseService courseService = null;
+        private DispatchService dispatchService = null;
         private RegistrationService registrationService = null;
         private UploadService uploadService = null;
         private FtpService ftpService = null;
@@ -65,6 +66,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
             configuration = config;
             courseService = new CourseService(configuration, this);
+            dispatchService = new DispatchService(configuration, this);
             registrationService = new RegistrationService(configuration, this);
             uploadService = new UploadService(configuration, this);
             ftpService = new FtpService(configuration, this);
@@ -79,6 +81,14 @@ namespace RusticiSoftware.HostedEngine.Client
         public CourseService CourseService
         {
             get { return courseService; }
+        }
+
+        /// <summary>
+        /// Contains all SCORM Dispatch functionality.
+        /// </summary>
+        public DispatchService DispatchService
+        {
+            get { return dispatchService; }
         }
 
         /// <summary>

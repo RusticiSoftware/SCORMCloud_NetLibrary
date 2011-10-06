@@ -75,6 +75,14 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Contains all SCORM Engine Dispatch functionality.
+        /// </summary>
+        public static DispatchService DispatchService
+        {
+            get { return Service.DispatchService; }
+        }
+
+        /// <summary>
         /// Contains all SCORM Engine Package-level (i.e., course) functionality.
         /// </summary>
         public static RegistrationService RegistrationService
