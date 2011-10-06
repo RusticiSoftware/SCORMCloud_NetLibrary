@@ -33,32 +33,43 @@ using System.Xml;
 namespace RusticiSoftware.HostedEngine.Client
 {
     /// <summary>
-    /// Data Transfer object that contains information from the dispatch destination listing
+    /// Data Transfer object that contains information from the dispatch listing
     /// service.
     /// </summary>
-    public class DestinationData
+    public class DispatchData
     {
+        private string dispatchId;
         private string destinationId;
-        private string name;
+        private string appId;
+        private string courseAppId;
+        private string courseId;
+        private bool enabled;
         private string tags;
+        private string notes;
         private string createdBy;
         private DateTime createDate;
         private DateTime updateDate;
 
         /// <summary>
-        /// Purpose of this class is to map the return xml from the dispatch destination listing
+        /// Purpose of this class is to map the return xml from the dispatch listing
         /// web service into an object.  This is the main constructor.
         /// </summary>
         /// <param name="destinationDataElement"></param>
-        public DestinationData(XmlElement destinationDataElement)
+        public DispatchData(XmlElement dispatchDataElement)
         {
-            this.destinationId = destinationDataElement["id"].InnerText;
-            this.name = destinationDataElement["name"].InnerText;
-            this.createdBy = destinationDataElement["createdBy"].InnerText;
-            this.createDate = DateTime.Parse(destinationDataElement["createDate"].InnerText);
-            this.updateDate = DateTime.Parse(destinationDataElement["updateDate"].InnerText);
+            this.dispatchId = dispatchDataElement["id"].InnerText;
+            this.destinationId = dispatchDataElement["destinationId"].InnerText;
+            this.appId = dispatchDataElement["appId"].InnerText;
+            this.courseAppId = dispatchDataElement["courseAppId"].InnerText;
+            this.courseId = dispatchDataElement["courseId"].InnerText;
+            this.enabled = bool.Parse(dispatchDataElement["enabled"].InnerText);
+            if (dispatchDataElement["notes"] != null)
+                this.notes = dispatchDataElement["notes"].InnerText;
+            this.createdBy = dispatchDataElement["createdBy"].InnerText;
+            this.createDate = DateTime.Parse(dispatchDataElement["createDate"].InnerText);
+            this.updateDate = DateTime.Parse(dispatchDataElement["updateDate"].InnerText);
 
-            XmlNodeList tagList = destinationDataElement.GetElementsByTagName("tag");
+            XmlNodeList tagList = dispatchDataElement.GetElementsByTagName("tag");
             string[] tags = new string[tagList.Count];
             for (int i = 0; i < tagList.Count; ++i)
             {
@@ -73,21 +84,29 @@ namespace RusticiSoftware.HostedEngine.Client
         /// </summary>
         /// <param name="xmlDoc"></param>
         /// <returns></returns>
-        public static List<DestinationData> ConvertToDestinationDataList(XmlDocument xmlDoc)
+        public static List<DispatchData> ConvertToDispatchDataList(XmlDocument xmlDoc)
         {
-            List<DestinationData> allResults = new List<DestinationData>();
+            List<DispatchData> allResults = new List<DispatchData>();
 
-            XmlNodeList destinationDataList = xmlDoc.GetElementsByTagName("dispatchDestination");
-            foreach (XmlElement destinationData in destinationDataList)
+            XmlNodeList dispatchDataList = xmlDoc.GetElementsByTagName("dispatch");
+            foreach (XmlElement dispatchData in dispatchDataList)
             {
-                allResults.Add(new DestinationData(destinationData));
+                allResults.Add(new DispatchData(dispatchData));
             }
 
             return allResults;
         }
 
         /// <summary>
-        /// Destination Identifier.
+        /// Dispatch Identifier.
+        /// </summary>
+        public string DispatchId
+        {
+            get { return dispatchId; }
+        }
+
+        /// <summary>
+        /// The id of the destination this dispatch is associated with.
         /// </summary>
         public string DestinationId
         {
@@ -95,15 +114,39 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// The name of this destination.
+        /// 
         /// </summary>
-        public string Name
+        public string AppId
         {
-            get { return name; }
+            get { return appId; }
         }
 
         /// <summary>
-        /// The tags associated with the destination.
+        /// 
+        /// </summary>
+        public string CourseAppId
+        {
+            get { return courseAppId; }
+        }
+
+        /// <summary>
+        /// The id of the course this dispatch is associated with.
+        /// </summary>
+        public string CourseId
+        {
+            get { return courseId; }
+        }
+
+        /// <summary>
+        /// true if this dispatch is enabled; otherwise, false.
+        /// </summary>
+        public bool Enabled
+        {
+            get { return enabled; }
+        }
+
+        /// <summary>
+        /// The tags associated with the dispatch.
         /// </summary>
         public string Tags
         {
@@ -111,7 +154,15 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// Who created this destination.
+        /// The tags associated with the dispatch.
+        /// </summary>
+        public string Notes
+        {
+            get { return notes; }
+        }
+
+        /// <summary>
+        /// Who created this dispatch.
         /// </summary>
         public string CreatedBy
         {
@@ -119,7 +170,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// When this destination was created.
+        /// When this dispatch was created.
         /// </summary>
         public DateTime CreateDate
         {
@@ -127,7 +178,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// When this destination was last updated.
+        /// When this dispatch was last updated.
         /// </summary>
         public DateTime UpdateDate
         {

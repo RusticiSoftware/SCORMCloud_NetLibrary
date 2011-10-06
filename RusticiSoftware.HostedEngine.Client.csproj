@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="DebugService.cs" />
     <Compile Include="DestinationData.cs" />
+    <Compile Include="DispatchData.cs" />
     <Compile Include="DispatchService.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Export.cs" />
