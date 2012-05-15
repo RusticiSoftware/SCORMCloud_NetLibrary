@@ -38,6 +38,7 @@ namespace RusticiSoftware.HostedEngine.Client
         private CourseService courseService = null;
         private DispatchService dispatchService = null;
         private RegistrationService registrationService = null;
+        private InvitationService invitationService = null;
         private UploadService uploadService = null;
         private FtpService ftpService = null;
         private ExportService exportService = null;
@@ -68,6 +69,7 @@ namespace RusticiSoftware.HostedEngine.Client
             courseService = new CourseService(configuration, this);
             dispatchService = new DispatchService(configuration, this);
             registrationService = new RegistrationService(configuration, this);
+            invitationService = new InvitationService(configuration, this);
             uploadService = new UploadService(configuration, this);
             ftpService = new FtpService(configuration, this);
             exportService = new ExportService(configuration, this);
@@ -97,6 +99,14 @@ namespace RusticiSoftware.HostedEngine.Client
         public RegistrationService RegistrationService
         {
             get { return registrationService; }
+        }
+
+        /// <summary>
+        /// Contains all SCORM Cloud invitation managament functionality.
+        /// </summary>
+        public InvitationService InvitationService
+        {
+            get { return invitationService; }
         }
 
 

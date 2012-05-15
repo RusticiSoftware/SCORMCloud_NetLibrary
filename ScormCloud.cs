@@ -90,6 +90,14 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return Service.RegistrationService; }
         }
 
+        /// <summary>
+        /// Contains all SCORM Cloud invitation functionality.
+        /// </summary>
+        public static InvitationService InvitationService
+        {
+            get { return Service.InvitationService; }
+        }
+
 
         /// <summary>
         /// Contains all SCORM Engine Upload/File Management functionality.
