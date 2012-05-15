@@ -40,6 +40,10 @@ The demo app is meant to provide examples for how to use many of the basic libra
 
 Updates:
 
+v1.2.0
+5.15.2012
+* Added the InvitationService to the Library 
+
 v1.1.2
 2.14.2011
 * Added the ReportingService to the Library for accessing Reportage.
