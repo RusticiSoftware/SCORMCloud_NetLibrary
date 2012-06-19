@@ -188,9 +188,9 @@ namespace RusticiSoftware.HostedEngine.Client
             ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("page", page);
             if (!string.IsNullOrEmpty(destinationId))
-                request.Parameters.Add("destinationId", destinationId);
+                request.Parameters.Add("destinationid", destinationId);
             if (!string.IsNullOrEmpty(courseId))
-                request.Parameters.Add("courseId", courseId);
+                request.Parameters.Add("courseid", courseId);
             if (!string.IsNullOrEmpty(tags))
                 request.Parameters.Add("tags", tags);
             XmlDocument response = request.CallService("rustici.dispatch.getDispatchList");
