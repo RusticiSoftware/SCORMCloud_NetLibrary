@@ -110,15 +110,15 @@ namespace RusticiSoftware.HostedEngine.Client
             if (creatingUserEmail != null && creatingUserEmail.Length > 0)
                 request.Parameters.Add("creatingUserEmail", creatingUserEmail);
             if (postbackUrl != null && postbackUrl.Length > 0)
-                request.Parameters.Add("postbackUrl", postbackUrl);
+                request.Parameters.Add("postbackurl", postbackUrl);
             if (authType != null && authType.Length > 0)
-                request.Parameters.Add("authType", authType);
+                request.Parameters.Add("authtype", authType);
             if (urlName != null && urlName.Length > 0)
-                request.Parameters.Add("urlName", urlName);
+                request.Parameters.Add("urlname", urlName);
             if (urlPass != null && urlPass.Length > 0)
-                request.Parameters.Add("urlPass", urlPass);
+                request.Parameters.Add("urlpass", urlPass);
             if (resultsFormat != null && resultsFormat.Length > 0)
-                request.Parameters.Add("resultsFormat", resultsFormat);
+                request.Parameters.Add("resultsformat", resultsFormat);
         
             if (async){
         	    return request.CallService("rustici.invitation.createInvitationAsync").DocumentElement.InnerText;
