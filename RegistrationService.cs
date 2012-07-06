@@ -298,7 +298,7 @@ namespace RusticiSoftware.HostedEngine.Client
                 request.Parameters.Add((courseIdIsExact ? "courseid" : "coursefilter"), courseIdFilterRegex);
             }
             if (after != null)
-                request.Parameters.Add("before", after.GetValueOrDefault().ToUniversalTime());
+                request.Parameters.Add("after", after.GetValueOrDefault().ToUniversalTime());
             if (until != null)
                 request.Parameters.Add("until", until.GetValueOrDefault().ToUniversalTime());
  
