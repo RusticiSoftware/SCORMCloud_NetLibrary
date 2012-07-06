@@ -96,6 +96,61 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
 
+        /// <summary>
+        /// Create a new Registration (Instance of a user taking a course)
+        /// </summary>
+        /// <param name="registrationId">Unique Identifier for the registration</param>
+        /// <param name="courseId">Unique Identifier for the course</param>
+        /// <param name="versionId">Optional versionID, if Int32.MinValue, latest course version is used.</param>
+        /// <param name="learnerId">Unique Identifier for the learner</param>
+        /// <param name="learnerFirstName">Learner's first name</param>
+        /// <param name="learnerLastName">Learner's last name</param>
+        /// <param name="resultsPostbackUrl">URL to which the server will post results back to</param>
+        /// <param name="authType">Type of Authentication used at results postback time</param>
+        /// <param name="postBackLoginName">If postback authentication is used, the logon name</param>
+        /// <param name="postBackLoginPassword">If postback authentication is used, the password</param>
+        /// <param name="resultsFormat">The Format of the results XML sent to the postback URL</param>
+        /// <param name="learnerTags">A comma separated list of learner tags to associate with this registration</param>
+        /// <param name="courseTags">A comma separated list of course tags to associate with this registration</param>
+        /// <param name="registrationTags">A comma separated list of tags to associate with this registration</param>
+        public void CreateRegistration(string registrationId, string courseId, int versionId, string learnerId,
+            string learnerFirstName, string learnerLastName, string resultsPostbackUrl,
+            RegistrationResultsAuthType authType, string postBackLoginName, string postBackLoginPassword,
+            RegistrationResultsFormat resultsFormat,
+            string learnerTags, string courseTags, string registrationTags)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("regid", registrationId);
+            request.Parameters.Add("courseid", courseId);
+            request.Parameters.Add("fname", learnerFirstName);
+            request.Parameters.Add("lname", learnerLastName);
+            request.Parameters.Add("learnerid", learnerId);
+
+            // Required on this signature but not by the actual service
+            request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
+            request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+
+            // Optional:
+            if (!String.IsNullOrEmpty(resultsPostbackUrl))
+                request.Parameters.Add("postbackurl", resultsPostbackUrl);
+            if (!String.IsNullOrEmpty(postBackLoginName))
+                request.Parameters.Add("urlname", postBackLoginName);
+            if (!String.IsNullOrEmpty(postBackLoginPassword))
+                request.Parameters.Add("urlpass", postBackLoginPassword);
+            if (versionId != Int32.MinValue)
+                request.Parameters.Add("versionid", versionId);
+
+            // Optional tags
+            if (!String.IsNullOrEmpty(learnerTags))
+                request.Parameters.Add("learnerTags", learnerTags);
+            if (!String.IsNullOrEmpty(courseTags))
+                request.Parameters.Add("courseTags", courseTags);
+            if (!String.IsNullOrEmpty(registrationTags))
+                request.Parameters.Add("registrationTags", registrationTags);
+
+            request.CallService("rustici.registration.createRegistration");
+        }
+
         //TODO: Other overrides of createRegistration....
 
         /// <summary>
@@ -213,7 +268,7 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <returns></returns>
         public List<RegistrationData> GetRegistrationList(string regIdFilterRegex, string courseIdFilterRegex)
         {
-            return GetRegistrationList(regIdFilterRegex, courseIdFilterRegex, false);
+            return GetRegistrationList(regIdFilterRegex, courseIdFilterRegex, false, null, null);
         }
 
         /// <summary>
@@ -224,12 +279,29 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <returns></returns>
         public List<RegistrationData> GetRegistrationList(string regIdFilterRegex, string courseIdFilterRegex, bool courseIdIsExact)
         {
+            return GetRegistrationList(regIdFilterRegex, courseIdFilterRegex, courseIdIsExact, null, null);
+        }
+
+        /// <summary>
+        /// Returns a list of registration id's along with their associated course
+        /// </summary>
+        /// <param name="regIdFilterRegex">Optional registration id filter</param>
+        /// <param name="courseIdFilterRegex">Option course id filter</param>
+        /// <returns></returns>
+        public List<RegistrationData> GetRegistrationList(string regIdFilterRegex, string courseIdFilterRegex, bool courseIdIsExact, DateTime? after, DateTime? until)
+        {
             ServiceRequest request = new ServiceRequest(configuration);
             if (!String.IsNullOrEmpty(regIdFilterRegex))
                 request.Parameters.Add("filter", regIdFilterRegex);
-            if (!String.IsNullOrEmpty(courseIdFilterRegex)){
+            if (!String.IsNullOrEmpty(courseIdFilterRegex))
+            {
                 request.Parameters.Add((courseIdIsExact ? "courseid" : "coursefilter"), courseIdFilterRegex);
             }
+            if (after != null)
+                request.Parameters.Add("before", after.GetValueOrDefault().ToUniversalTime());
+            if (until != null)
+                request.Parameters.Add("until", until.GetValueOrDefault().ToUniversalTime());
+ 
             XmlDocument response = request.CallService("rustici.registration.getRegistrationList");
 
             // Return the subset of the xml starting with the top <summary>
