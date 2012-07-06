@@ -67,7 +67,7 @@ namespace RusticiSoftware.HostedEngine.Client
 		    {
 		        paramNames.Add(key);
 		    }
-            paramNames.Sort();
+            paramNames.Sort(CaseInsensitiveComparer.DefaultInvariant);
     		
 		    foreach (string paramName in paramNames) {			
 			    if (!IsExcludedParam(paramName)){				
