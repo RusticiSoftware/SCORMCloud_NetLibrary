@@ -1,6 +1,6 @@
 Software License Agreement (BSD License)
 
-Copyright (c) 2010-2011, Rustici Software, LLC
+Copyright (c) 2010-2012, Rustici Software, LLC
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,12 @@ There is also a .Net Demo application available for download here: https://githu
 The demo app is meant to provide examples for how to use many of the basic library calls.
 
 Updates:
+
+v1.2.1
+8.29.12
+* Modified the CourseService to update the methods of importing courses and to add support for the 'exists' service call. Refer to the .Net HostedDemoApp UploadLearning.aspx to see the prescribed import process. 
+* Removed the course import web control since it uses the old methods of update.
+
 
 v1.2.0
 5.15.2012

@@ -62,7 +62,6 @@
     <Compile Include="UploadToken.cs" />
     <Compile Include="UserInvitationStatus.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="WebControls\ImportControl.cs" />
     <Compile Include="ImportResult.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="CourseService.cs" />

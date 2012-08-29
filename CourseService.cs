@@ -88,21 +88,33 @@ namespace RusticiSoftware.HostedEngine.Client
         /// for ftp access service (see ftp service below). 
         /// If the domain specified does not exist, the course will be placed in the default permission domain</param>
         /// <returns>List of Import Results</returns>
-        public List<ImportResult> ImportCourse(string courseId, string absoluteFilePathToZip, 
+        public List<ImportResult> ImportCourse(string courseId, string absoluteFilePathToZip,
             string itemIdToImport, string permissionDomain)
         {
-            UploadResult uploadResult = manager.UploadService.UploadFile(absoluteFilePathToZip, permissionDomain);
-            String location = uploadResult.location;
-            String server = uploadResult.server;
+            ServiceRequest request = new ServiceRequest(configuration);
+            if (!String.IsNullOrEmpty(itemIdToImport))
+                request.Parameters.Add("itemid", itemIdToImport);
+            if (!String.IsNullOrEmpty(itemIdToImport))
+                request.Parameters.Add("pd", permissionDomain);
+            request.FileToPost = absoluteFilePathToZip;
+            XmlDocument response = request.CallService("rustici.course.importCourse");
+            return ImportResult.ConvertToImportResults(response);
 
-            List<ImportResult> results = null;
-            try {
-                results = ImportUploadedCourse(courseId, location, itemIdToImport, permissionDomain);
-            }
-            finally {
-                manager.UploadService.DeleteFile(location);
-            }
-            return results;
+        }
+
+        /// <summary>
+        /// Get a URL to target a file import form for importing a course to the SCORM Cloud.
+        /// </summary>
+        /// <param name="courseId">the desired id for the course</param>
+        /// <param name="redirectUrl">the url for the browser to be redirected to after import</param>
+        /// <returns></returns>
+        public String GetImportCourseUrl(string courseId, string redirectUrl)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            if (!String.IsNullOrEmpty(redirectUrl))
+                request.Parameters.Add("redirecturl", redirectUrl);
+            return request.ConstructUrl("rustici.course.importCourse");
         }
         
 
@@ -748,6 +760,20 @@ namespace RusticiSoftware.HostedEngine.Client
             if (!String.IsNullOrEmpty(cssUrl))
                 request.Parameters.Add("cssurl", cssUrl);
             return request.ConstructUrl("rustici.course.preview");
+        }
+
+        /// <summary>
+        /// Returns a boolean of whether or not the a course with the given courseId exists in the associated
+        /// appId in the SCORM Cloud.
+        /// </summary>
+        /// <param name="courseId">Unique Course Identifier</param>
+        /// <returns></returns>
+        public bool Exists(String courseId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            XmlDocument response = request.CallService("rustici.course.exists");
+            return bool.Parse(response.DocumentElement.GetElementsByTagName("result").Item(0).InnerText);
         }
     }
 }
