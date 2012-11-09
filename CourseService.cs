@@ -92,6 +92,7 @@ namespace RusticiSoftware.HostedEngine.Client
             string itemIdToImport, string permissionDomain)
         {
             ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
             if (!String.IsNullOrEmpty(itemIdToImport))
                 request.Parameters.Add("itemid", itemIdToImport);
             if (!String.IsNullOrEmpty(itemIdToImport))
