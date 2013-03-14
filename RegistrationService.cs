@@ -212,6 +212,27 @@ namespace RusticiSoftware.HostedEngine.Client
             return Convert.ToInt32(successNodes[0].Attributes["instanceid"].Value);
         }
 
+
+        /// <summary>
+        /// Return a registration detail object for the given registration
+        /// </summary>
+        /// <param name="registrationId">The unique identifier of the registration</param>
+        /// <returns></returns>
+        public RegistrationData GetRegistrationDetail(string registrationId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            
+            request.Parameters.Add("regid", registrationId);
+
+            XmlDocument response = request.CallService("rustici.registration.getRegistrationDetail");
+
+            XmlElement reportElem = (XmlElement)response.GetElementsByTagName("registration")[0];
+
+            return new RegistrationData(reportElem);
+
+        }
+
+
         /// <summary>
         /// Return a registration summary object for the given registration
         /// </summary>
