@@ -43,5 +43,19 @@ namespace RusticiSoftware.HostedEngine.Client
         {
             return date.ToString(isoDateFormat);
         }
+
+        public static DateTime? ParseNullableDate(String date)
+        {
+            DateTime returnDate;
+            if (DateTime.TryParse(date, out returnDate))
+            {
+                return returnDate;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }
