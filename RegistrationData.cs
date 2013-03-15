@@ -46,14 +46,13 @@ namespace RusticiSoftware.HostedEngine.Client
         private string _learnerLastName;
         private string _email;
 
-        private DateTime? _createDate;
+        private DateTime _createDate;
         private DateTime? _firstAccessDate;
         private DateTime? _lastAccessDate;
         private DateTime? _completedDate;
 
         private List<InstanceData> _instances;
 
-       // private int numberOfInstances;
 
         /// <summary>
         /// Constructor which takes an XML node as returned by the web service.
@@ -93,15 +92,15 @@ namespace RusticiSoftware.HostedEngine.Client
                             .GetElementsByTagName("createDate")[0])
                             .InnerText);
 
-            this.FirstAccessDate = DateTime.Parse(((XmlElement)registrationElem
+            this.FirstAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
                             .GetElementsByTagName("firstAccessDate")[0])
                             .InnerText);
 
-            this.LastAccessDate = DateTime.Parse(((XmlElement)registrationElem
+            this.LastAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
                             .GetElementsByTagName("lastAccessDate")[0])
                             .InnerText);
 
-            this.CompletedDate = DateTime.Parse(((XmlElement)registrationElem
+            this.CompletedDate = Utils.ParseNullableDate(((XmlElement)registrationElem
                             .GetElementsByTagName("completedDate")[0])
                             .InnerText);
 
@@ -128,6 +127,8 @@ namespace RusticiSoftware.HostedEngine.Client
             return allResults;
         }
 
+
+        
         /// <summary>
         /// Unique Identifier for this registration
         /// </summary>
@@ -138,7 +139,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// Unique Identifier for this course
+        /// Course Identifier as specified at import-time
         /// </summary>
         public string CourseId
         {
@@ -147,7 +148,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// 
+        /// The title of this course
         /// </summary>
         public string CourseTitle
         {
@@ -157,7 +158,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// The last version of the course that was launched
         /// </summary>
         public string LastCourseVersionLaunched
         {
@@ -168,7 +169,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Learner Identifier as specified at import-time
         /// </summary>
         public string LearnerId
         {
@@ -178,7 +179,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Learner First Name as specified at import-time
         /// </summary>
         public string LearnerFirstName
         {
@@ -188,7 +189,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Learner Last Name as specified at import-time
         /// </summary>
         public string LearnerLastName
         {
@@ -198,7 +199,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Learner Email as specified at import-time
         /// </summary>
         public string Email
         {
@@ -208,9 +209,9 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Date in which the registration was created
         /// </summary>
-        public DateTime? CreateDate
+        public DateTime CreateDate
         {
             get { return _createDate; }
             private set { _createDate = value; }
@@ -218,7 +219,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Date in which the registration was first accessed
         /// </summary>
         public DateTime? FirstAccessDate
         {
@@ -228,7 +229,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Date in which the registration was last accessed
         /// </summary>
         public DateTime? LastAccessDate
         {
@@ -238,7 +239,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
 
         /// <summary>
-        /// 
+        /// Date in which the registration was completed
         /// </summary>
         public DateTime? CompletedDate
         {
@@ -247,19 +248,14 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
 
+        /// <summary>
+        /// List of Verions/Instances available for this course
+        /// </summary>
         public List<InstanceData> Instances
         {
             get { return _instances; }
             private set { _instances = value; }
         }
-//        /// <summary>
-//        /// Number of instances of this course.  Instances are independent registrations
-//        /// of the same registration ID.  It is essentially "retakes" of a course by
-//        /// the same user under the same registration ID.
-//        /// </summary>
-//        public int NumberOfInstances
-//        {
-//            get { return numberOfInstances; }
-//        }
+
     }
 }
