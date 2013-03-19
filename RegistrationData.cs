@@ -37,31 +37,74 @@ namespace RusticiSoftware.HostedEngine.Client
     /// </summary>
     public class RegistrationData
     {
-        private string registrationId;
-        private string courseId;
-        private string completionTime;
-        // private int numberOfInstances;
+        private string _registrationId;
+        private string _courseId;
+        private string _courseTitle;
+        private string _lastCourseVersionLaunched;
+        private string _learnerId;
+        private string _learnerFirstName;
+        private string _learnerLastName;
+        private string _email;
+
+        private DateTime _createDate;
+        private DateTime? _firstAccessDate;
+        private DateTime? _lastAccessDate;
+        private DateTime? _completedDate;
+
+        private List<InstanceData> _instances;
+
 
         /// <summary>
         /// Constructor which takes an XML node as returned by the web service.
         /// </summary>
         /// <param name="regDataEl"></param>
-        public RegistrationData(XmlElement regDataEl)
+        public RegistrationData(XmlElement registrationElem)
         {
-            this.registrationId = regDataEl.Attributes["id"].Value;
-            this.courseId = regDataEl.Attributes["courseid"].Value;
-            if (regDataEl.SelectSingleNode("completedDate") != null)
-            {
-                XmlNode childNode = regDataEl.SelectSingleNode("completedDate");
-                if (childNode.FirstChild is XmlCDataSection)
-                {
-                    XmlCDataSection cdataSection = childNode.FirstChild as XmlCDataSection;
+            this.RegistrationId = registrationElem.Attributes["id"].Value;
 
-                    this.completionTime = cdataSection.Value;
-                }
+            this.CourseId = registrationElem.Attributes["courseid"].Value;
 
-            }
-            //this.numberOfInstances = Convert.ToInt32(regDataEl.Attributes["instances"].Value);
+            this.CourseTitle = ((XmlElement)registrationElem
+                            .GetElementsByTagName("courseTitle")[0])
+                            .InnerText;
+
+            this.LastCourseVersionLaunched = ((XmlElement)registrationElem
+                            .GetElementsByTagName("lastCourseVersionLaunched")[0])
+                            .InnerText;
+
+            this.LearnerId = ((XmlElement)registrationElem
+                            .GetElementsByTagName("learnerId")[0])
+                            .InnerText;
+
+            this.LearnerFirstName = ((XmlElement)registrationElem
+                            .GetElementsByTagName("learnerFirstName")[0])
+                            .InnerText;
+
+            this.LearnerLastName = ((XmlElement)registrationElem
+                            .GetElementsByTagName("learnerLastName")[0])
+                            .InnerText;
+
+            this.Email = ((XmlElement)registrationElem
+                            .GetElementsByTagName("email")[0])
+                            .InnerText;
+
+            this.CreateDate = DateTime.Parse(((XmlElement)registrationElem
+                            .GetElementsByTagName("createDate")[0])
+                            .InnerText);
+
+            this.FirstAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                            .GetElementsByTagName("firstAccessDate")[0])
+                            .InnerText);
+
+            this.LastAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                            .GetElementsByTagName("lastAccessDate")[0])
+                            .InnerText);
+
+            this.CompletedDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                            .GetElementsByTagName("completedDate")[0])
+                            .InnerText);
+
+            this.Instances = InstanceData.ConvertToInstanceDataList((XmlElement)registrationElem.GetElementsByTagName("instances")[0]);
 
         }
 
@@ -91,30 +134,135 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return completionTime; }
         }
 
+
+        
         /// <summary>
         /// Unique Identifier for this registration
         /// </summary>
         public string RegistrationId
         {
-            get { return registrationId; }
+            get { return _registrationId; }
+            private set { _registrationId = value; }
         }
 
         /// <summary>
-        /// Unique Identifier for this course
+        /// Course Identifier as specified at import-time
         /// </summary>
         public string CourseId
         {
-            get { return courseId; }
+            get { return _courseId; }
+            private set { _courseId = value; }
         }
 
-        //        /// <summary>
-        //        /// Number of instances of this course.  Instances are independent registrations
-        //        /// of the same registration ID.  It is essentially "retakes" of a course by
-        //        /// the same user under the same registration ID.
-        //        /// </summary>
-        //        public int NumberOfInstances
-        //        {
-        //            get { return numberOfInstances; }
-        //        }
+        /// <summary>
+        /// The title of this course
+        /// </summary>
+        public string CourseTitle
+        {
+            get { return _courseTitle; }
+            private set { _courseTitle = value; }
+        }
+
+
+        /// <summary>
+        /// The last version of the course that was launched
+        /// </summary>
+        public string LastCourseVersionLaunched
+        {
+            get { return _lastCourseVersionLaunched; }
+            private set { _lastCourseVersionLaunched = value; }
+        }
+
+
+
+        /// <summary>
+        /// Learner Identifier as specified at import-time
+        /// </summary>
+        public string LearnerId
+        {
+            get { return _learnerId; }
+            private set { _learnerId = value; }
+        }
+
+
+        /// <summary>
+        /// Learner First Name as specified at import-time
+        /// </summary>
+        public string LearnerFirstName
+        {
+            get { return _learnerFirstName; }
+            private set { _learnerFirstName = value; }
+        }
+
+
+        /// <summary>
+        /// Learner Last Name as specified at import-time
+        /// </summary>
+        public string LearnerLastName
+        {
+            get { return _learnerLastName; }
+            private set { _learnerLastName = value; }
+        }
+
+
+        /// <summary>
+        /// Learner Email as specified at import-time
+        /// </summary>
+        public string Email
+        {
+            get { return _email; }
+            private set { _email = value; }
+        }
+
+
+        /// <summary>
+        /// Date in which the registration was created
+        /// </summary>
+        public DateTime CreateDate
+        {
+            get { return _createDate; }
+            private set { _createDate = value; }
+        }
+
+
+        /// <summary>
+        /// Date in which the registration was first accessed
+        /// </summary>
+        public DateTime? FirstAccessDate
+        {
+            get { return _firstAccessDate; }
+            private set { _firstAccessDate = value; }
+        }
+
+
+        /// <summary>
+        /// Date in which the registration was last accessed
+        /// </summary>
+        public DateTime? LastAccessDate
+        {
+            get { return _lastAccessDate; }
+            private set { _lastAccessDate = value; }
+        }
+
+
+        /// <summary>
+        /// Date in which the registration was completed
+        /// </summary>
+        public DateTime? CompletedDate
+        {
+            get { return _completedDate; }
+            private set { _completedDate = value; }
+        }
+
+
+        /// <summary>
+        /// List of Verions/Instances available for this course
+        /// </summary>
+        public List<InstanceData> Instances
+        {
+            get { return _instances; }
+            private set { _instances = value; }
+        }
+
     }
 }

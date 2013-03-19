@@ -56,6 +56,7 @@
     <Compile Include="ExportService.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="FtpService.cs" />
+    <Compile Include="InstanceData.cs" />
     <Compile Include="InvitationInfo.cs" />
     <Compile Include="InvitationService.cs" />
     <Compile Include="LaunchInfo.cs" />
