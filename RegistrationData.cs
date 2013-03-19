@@ -39,7 +39,8 @@ namespace RusticiSoftware.HostedEngine.Client
     {
         private string registrationId;
         private string courseId;
-       // private int numberOfInstances;
+        private string completionTime;
+        // private int numberOfInstances;
 
         /// <summary>
         /// Constructor which takes an XML node as returned by the web service.
@@ -49,7 +50,19 @@ namespace RusticiSoftware.HostedEngine.Client
         {
             this.registrationId = regDataEl.Attributes["id"].Value;
             this.courseId = regDataEl.Attributes["courseid"].Value;
+            if (regDataEl.SelectSingleNode("completedDate") != null)
+            {
+                XmlNode childNode = regDataEl.SelectSingleNode("completedDate");
+                if (childNode.FirstChild is XmlCDataSection)
+                {
+                    XmlCDataSection cdataSection = childNode.FirstChild as XmlCDataSection;
+
+                    this.completionTime = cdataSection.Value;
+                }
+
+            }
             //this.numberOfInstances = Convert.ToInt32(regDataEl.Attributes["instances"].Value);
+
         }
 
         /// <summary>
@@ -70,6 +83,13 @@ namespace RusticiSoftware.HostedEngine.Client
 
             return allResults;
         }
+        /// <summary>
+        /// Unique Identifier for this registration
+        /// </summary>
+        public string CompletionTime
+        {
+            get { return completionTime; }
+        }
 
         /// <summary>
         /// Unique Identifier for this registration
@@ -87,14 +107,14 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return courseId; }
         }
 
-//        /// <summary>
-//        /// Number of instances of this course.  Instances are independent registrations
-//        /// of the same registration ID.  It is essentially "retakes" of a course by
-//        /// the same user under the same registration ID.
-//        /// </summary>
-//        public int NumberOfInstances
-//        {
-//            get { return numberOfInstances; }
-//        }
+        //        /// <summary>
+        //        /// Number of instances of this course.  Instances are independent registrations
+        //        /// of the same registration ID.  It is essentially "retakes" of a course by
+        //        /// the same user under the same registration ID.
+        //        /// </summary>
+        //        public int NumberOfInstances
+        //        {
+        //            get { return numberOfInstances; }
+        //        }
     }
 }
