@@ -720,6 +720,35 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Get the tags of a course
+        /// </summary>        
+        /// <param name="courseId">Unique Course Identifier</param>        
+        /// <returns>List of tags?</returns>
+        public String GetTags(String courseId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            request.Parameters.Add("appid ", configuration.AppId);
+                                    
+            XmlDocument response = request.CallService("rustici.tagging.getCourseTags");
+
+            XmlDocument tagXML = new XmlDocument();
+            string tagXMLString = response.ChildNodes[1].InnerXml; 
+            tagXML.LoadXml(tagXMLString);            
+            string tagList = "";
+            for (var n = 0; n < tagXML.FirstChild.ChildNodes.Count; n++)
+            {
+                XmlNode nextTagNode = tagXML.FirstChild.ChildNodes[n];
+                if (n > 0) tagList += ",";
+                tagList += nextTagNode.InnerText;                
+            }            
+
+            return tagList;
+
+        }
+        
+
+        /// <summary>
         /// Get the url that points directly to a course asset
         /// </summary>
         /// <param name="courseId">Unique Course Identifier</param>

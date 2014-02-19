@@ -91,6 +91,15 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Tagging functionality
+        /// </summary>
+        public static TaggingService TaggingService
+        {
+            get { return Service.TaggingService; }
+        }
+
+
+        /// <summary>
         /// Contains all SCORM Cloud invitation functionality.
         /// </summary>
         public static InvitationService InvitationService
