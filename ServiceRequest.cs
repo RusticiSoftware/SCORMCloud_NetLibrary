@@ -270,11 +270,19 @@ namespace RusticiSoftware.HostedEngine.Client
 
             // Construct the url, concatonate all parameters as query string parameters
             string url = this.engineServiceUrl + "/api";
-            int cnt = 0;
+            int cnt = 0; 
             foreach(string key in parameterMap.Keys)
             {
                 // Create a query string with URL-encoded values
-                url += (cnt++ == 0 ? "?" : "&") + key + "=" + HttpUtility.UrlEncode(parameterMap[key].ToString());
+                if (key.Equals("reportUrl"))
+                {
+                    url += (cnt++ == 0 ? "?" : "&") + key + "=" + parameterMap[key].ToString();
+                }
+                else 
+                {
+                    url += (cnt++ == 0 ? "?" : "&") + key + "=" + HttpUtility.UrlEncode(parameterMap[key].ToString());
+                }
+                
             }
             url += "&sig=" + RequestSigner.GetSignatureForRequest(configuration.SecurityKey, parameterMap);
 

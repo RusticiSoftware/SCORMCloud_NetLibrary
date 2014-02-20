@@ -126,6 +126,13 @@ namespace RusticiSoftware.HostedEngine.Client
 
             return allResults;
         }
+        /// <summary>
+        /// Unique Identifier for this registration
+        /// </summary>
+        public string CompletionTime
+        {
+            get { return completionTime; }
+        }
 
 
         
