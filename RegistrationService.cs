@@ -173,6 +173,22 @@ namespace RusticiSoftware.HostedEngine.Client
             request.CallService("rustici.registration.createRegistration");
         }
 
+        /// <summary>
+        /// Confirm that a registrationExists
+        /// </summary>
+        /// <param name="registrationId">Unique Identifier for the registration</param>
+        public bool RegistrationExists(string registrationId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("regid", registrationId);
+            XmlDocument response = request.CallService("rustici.registration.exists");
+
+
+            XmlElement attrEl = (XmlElement)response.GetElementsByTagName("result")[0];
+
+            return Convert.ToBoolean(attrEl.InnerXml.ToString());
+        }
+
 		/// <summary>
         /// Create a new Registration (Instance of a user taking a course)
         /// </summary>
