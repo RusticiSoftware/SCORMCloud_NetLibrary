@@ -60,6 +60,7 @@
     <Compile Include="InvitationInfo.cs" />
     <Compile Include="InvitationService.cs" />
     <Compile Include="LaunchInfo.cs" />
+    <Compile Include="LrsAccountService.cs" />
     <Compile Include="ReportingService.cs" />
     <Compile Include="UploadResult.cs" />
     <Compile Include="UploadToken.cs" />

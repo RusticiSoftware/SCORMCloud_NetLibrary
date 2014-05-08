@@ -98,6 +98,11 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return Service.InvitationService; }
         }
 
+        public static LrsAccountService LrsAccountService
+        {
+            get { return Service.LrsAccountService; }
+        }
+
 
         /// <summary>
         /// Contains all SCORM Engine Upload/File Management functionality.

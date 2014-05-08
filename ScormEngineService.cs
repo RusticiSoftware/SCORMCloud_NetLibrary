@@ -39,6 +39,7 @@ namespace RusticiSoftware.HostedEngine.Client
         private DispatchService dispatchService = null;
         private RegistrationService registrationService = null;
         private InvitationService invitationService = null;
+        private LrsAccountService lrsAccountService = null;
         private UploadService uploadService = null;
         private FtpService ftpService = null;
         private ExportService exportService = null;
@@ -70,6 +71,7 @@ namespace RusticiSoftware.HostedEngine.Client
             dispatchService = new DispatchService(configuration, this);
             registrationService = new RegistrationService(configuration, this);
             invitationService = new InvitationService(configuration, this);
+            lrsAccountService = new LrsAccountService(configuration, this);
             uploadService = new UploadService(configuration, this);
             ftpService = new FtpService(configuration, this);
             exportService = new ExportService(configuration, this);
@@ -108,7 +110,10 @@ namespace RusticiSoftware.HostedEngine.Client
         {
             get { return invitationService; }
         }
-
+        public LrsAccountService LrsAccountService
+        {
+            get { return lrsAccountService; }
+        }
 
         /// <summary>
         /// Contains all SCORM Engine Upload/File Management functionality.
