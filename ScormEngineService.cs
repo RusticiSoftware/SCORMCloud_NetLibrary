@@ -38,6 +38,7 @@ namespace RusticiSoftware.HostedEngine.Client
         private CourseService courseService = null;
         private DispatchService dispatchService = null;
         private RegistrationService registrationService = null;
+        private TaggingService taggingService = null;
         private InvitationService invitationService = null;
         private LrsAccountService lrsAccountService = null;
         private UploadService uploadService = null;
@@ -70,6 +71,7 @@ namespace RusticiSoftware.HostedEngine.Client
             courseService = new CourseService(configuration, this);
             dispatchService = new DispatchService(configuration, this);
             registrationService = new RegistrationService(configuration, this);
+            taggingService = new TaggingService(configuration, this);
             invitationService = new InvitationService(configuration, this);
             lrsAccountService = new LrsAccountService(configuration, this);
             uploadService = new UploadService(configuration, this);
@@ -101,6 +103,14 @@ namespace RusticiSoftware.HostedEngine.Client
         public RegistrationService RegistrationService
         {
             get { return registrationService; }
+        }
+
+        /// <summary>
+        /// Tagging functionality
+        /// </summary>
+        public TaggingService TaggingService
+        {
+            get { return taggingService; }
         }
 
         /// <summary>
