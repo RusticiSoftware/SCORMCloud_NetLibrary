@@ -16,12 +16,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PortalDEV|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -30,16 +26,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PortalPROD|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PortalTEST|AnyCPU' ">
-    <OutputPath>bin\PROD\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,8 +43,6 @@
   <ItemGroup>
     <Compile Include="AsyncImportResult.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="ScormEngineUtilities.cs" />
-    <Compile Include="TaggingService.cs" />
     <Compile Include="CourseData.cs" />
     <Compile Include="CustomWebClient.cs">
       <SubType>Component</SubType>
@@ -69,6 +60,7 @@
     <Compile Include="InvitationInfo.cs" />
     <Compile Include="InvitationService.cs" />
     <Compile Include="LaunchInfo.cs" />
+    <Compile Include="LrsAccountService.cs" />
     <Compile Include="ReportingService.cs" />
     <Compile Include="UploadResult.cs" />
     <Compile Include="UploadToken.cs" />
@@ -92,13 +84,7 @@
   <ItemGroup>
     <Folder Include="Types\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include=".gitignore" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"</PreBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
