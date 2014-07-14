@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AsyncImportResult.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="TaggingService.cs" />
     <Compile Include="CourseData.cs" />
     <Compile Include="CustomWebClient.cs">
       <SubType>Component</SubType>
