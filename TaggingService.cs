@@ -61,12 +61,21 @@ namespace RusticiSoftware.HostedEngine.Client
             XmlDocument response = request.CallService("rustici.tagging.setLearnerTags");
             return response.InnerXml;
         }
-        public string GetLearnerTags(string learnerID)
+        public string[] GetLearnerTags(string learnerID)
         {
             ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("learnerid", learnerID);
-            XmlDocument response = request.CallService("rustici.tagging.getLearnerTags");
-            return response.FirstChild.InnerText;
+            request.Parameters.Add("learnerid", learnerID);            
+            XmlDocument tagsXMLDoc = request.CallService("rustici.tagging.getLearnerTags");
+            XmlNodeList tagNodes = tagsXMLDoc.GetElementsByTagName("tag");
+            string[] tags = new string[tagNodes.Count];
+
+            for (int t = 0; t < tagNodes.Count; t++)
+            {
+                string nextTag = tagNodes[t].InnerText;
+                tags[t] = nextTag;
+            }
+
+            return tags;
         }
         public string AddOrRemoveLearnerTag(string learnerID, string learnerTag, string ADD_or_REMOVE)
         {
@@ -105,12 +114,22 @@ namespace RusticiSoftware.HostedEngine.Client
 
             return response.InnerXml;
         }
-        public string GetRegistrationTags(string regID)
+        public string[] GetRegistrationTags(string regID)
         {
             ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("regid", regID);
-            XmlDocument response = request.CallService("rustici.tagging.removeRegistrationTag");
-            return response.InnerXml;
+            XmlDocument tagsXMLDoc = request.CallService("rustici.tagging.getRegistrationTags");                        
+            XmlNodeList tagNodes = tagsXMLDoc.GetElementsByTagName("tag");
+            string[] tags = new string[tagNodes.Count];
+
+            for (int t=0;t<tagNodes.Count;t++)
+            {
+                string nextTag = tagNodes[t].InnerText;
+                tags[t] = nextTag;                                
+            }
+
+            return tags;
+
         }
 
 
@@ -118,7 +137,7 @@ namespace RusticiSoftware.HostedEngine.Client
         public string SetCourseTags(string courseID, string regTags)
         {
             ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("courseID", courseID);
+            request.Parameters.Add("courseid", courseID);
             request.Parameters.Add("tags", regTags);
             XmlDocument response = request.CallService("rustici.tagging.setCourseTags");
             return response.InnerXml;
@@ -127,7 +146,7 @@ namespace RusticiSoftware.HostedEngine.Client
         public string AddOrRemoveCourseTags(string courseID, string regTag, string ADD_or_REMOVE)
         {
             ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("courseID", courseID);
+            request.Parameters.Add("courseid", courseID);
             request.Parameters.Add("tags", regTag);
 
             string serviceToCall = "addCourseTag";
@@ -136,12 +155,23 @@ namespace RusticiSoftware.HostedEngine.Client
 
             return response.InnerXml;
         }
-        public string GetCourseTags(string courseID)
+        public string[] GetCourseTags(string courseID)
         {
             ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("courseID", courseID);
-            XmlDocument response = request.CallService("rustici.tagging.removeRegistrationTag");
-            return response.InnerXml;
+            request.Parameters.Add("courseid", courseID);
+            
+            XmlDocument tagsXMLDoc = request.CallService("rustici.tagging.getCourseTags");
+            XmlNodeList tagNodes = tagsXMLDoc.GetElementsByTagName("tag");
+            string[] tags = new string[tagNodes.Count];
+
+            for (int t = 0; t < tagNodes.Count; t++)
+            {
+                string nextTag = tagNodes[t].InnerText;
+                tags[t] = nextTag;
+            }
+
+            return tags;
+
         }
 
 
