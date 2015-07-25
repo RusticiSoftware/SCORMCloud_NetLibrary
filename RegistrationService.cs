@@ -96,60 +96,108 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
 
-        /// <summary>
-        /// Create a new Registration (Instance of a user taking a course)
-        /// </summary>
-        /// <param name="registrationId">Unique Identifier for the registration</param>
-        /// <param name="courseId">Unique Identifier for the course</param>
-        /// <param name="versionId">Optional versionID, if Int32.MinValue, latest course version is used.</param>
-        /// <param name="learnerId">Unique Identifier for the learner</param>
-        /// <param name="learnerFirstName">Learner's first name</param>
-        /// <param name="learnerLastName">Learner's last name</param>
-        /// <param name="resultsPostbackUrl">URL to which the server will post results back to</param>
-        /// <param name="authType">Type of Authentication used at results postback time</param>
-        /// <param name="postBackLoginName">If postback authentication is used, the logon name</param>
-        /// <param name="postBackLoginPassword">If postback authentication is used, the password</param>
-        /// <param name="resultsFormat">The Format of the results XML sent to the postback URL</param>
-        /// <param name="learnerTags">A comma separated list of learner tags to associate with this registration</param>
-        /// <param name="courseTags">A comma separated list of course tags to associate with this registration</param>
-        /// <param name="registrationTags">A comma separated list of tags to associate with this registration</param>
-        public void CreateRegistration(string registrationId, string courseId, int versionId, string learnerId,
-            string learnerFirstName, string learnerLastName, string resultsPostbackUrl,
-            RegistrationResultsAuthType authType, string postBackLoginName, string postBackLoginPassword,
-            RegistrationResultsFormat resultsFormat,
-            string learnerTags, string courseTags, string registrationTags)
-        {
-            ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("regid", registrationId);
-            request.Parameters.Add("courseid", courseId);
-            request.Parameters.Add("fname", learnerFirstName);
-            request.Parameters.Add("lname", learnerLastName);
-            request.Parameters.Add("learnerid", learnerId);
+      /// <summary>
+      /// Semantics: This method provides a way to update the postback settings for a registration created with the createRegistration call. If you wish to change an authenticated postback to an unauthenticated postback, please call this method with only a url specified.
+      /// </summary>
+      /// <param name="registrationId">Unique Identifier for the registration</param>
+      /// <param name="courseId">Unique Identifier for the course</param>
+      /// <param name="versionId">Optional versionID, if Int32.MinValue, latest course version is used.</param>
+      /// <param name="learnerId">Unique Identifier for the learner</param>
+      /// <param name="learnerFirstName">Learner's first name</param>
+      /// <param name="learnerLastName">Learner's last name</param>
+      /// <param name="resultsPostbackUrl">URL to which the server will post results back to</param>
+      /// <param name="authType">Type of Authentication used at results postback time</param>
+      /// <param name="postBackLoginName">If postback authentication is used, the logon name</param>
+      /// <param name="postBackLoginPassword">If postback authentication is used, the password</param>
+      /// <param name="resultsFormat">The Format of the results XML sent to the postback URL</param>
+      public void UpdatePostbackInfo(string applicationId, string registrationId, string resultsPostbackUrl,
+        string postBackLoginName, string postBackLoginPassword, RegistrationResultsAuthType authType,
+        RegistrationResultsFormat resultsFormat)
+		{
+			ServiceRequest request = new ServiceRequest(configuration);
+			request.Parameters.Add("appid", applicationId);
+			request.Parameters.Add("regid", registrationId);
+			request.Parameters.Add("postbackurl", resultsPostbackUrl);
 
-            // Required on this signature but not by the actual service
-            request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-            request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+			// Required on this signature but not by the actual service
+			request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
+			request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
-            // Optional:
-            if (!String.IsNullOrEmpty(resultsPostbackUrl))
-                request.Parameters.Add("postbackurl", resultsPostbackUrl);
-            if (!String.IsNullOrEmpty(postBackLoginName))
-                request.Parameters.Add("urlname", postBackLoginName);
-            if (!String.IsNullOrEmpty(postBackLoginPassword))
-                request.Parameters.Add("urlpass", postBackLoginPassword);
-            if (versionId != Int32.MinValue)
-                request.Parameters.Add("versionid", versionId);
+			// Optional:
+			if (!String.IsNullOrEmpty(postBackLoginName))
+				request.Parameters.Add("urlname", postBackLoginName);
+	        if (!String.IsNullOrEmpty(postBackLoginPassword))
+	        	request.Parameters.Add("urlpass", postBackLoginPassword);
 
-            // Optional tags
-            if (!String.IsNullOrEmpty(learnerTags))
-                request.Parameters.Add("learnerTags", learnerTags);
-            if (!String.IsNullOrEmpty(courseTags))
-                request.Parameters.Add("courseTags", courseTags);
-            if (!String.IsNullOrEmpty(registrationTags))
-                request.Parameters.Add("registrationTags", registrationTags);
+        	request.CallService("rustici.registration.updatePostbackInfo");
+      	}
 
-            request.CallService("rustici.registration.createRegistration");
-        }
+
+		public void UpdatePostbackInfo(string applicationId, string registrationId, string resultsPostbackUrl)
+		{
+			string postBackLoginName = String.Empty;
+	        string postBackLoginPassword = String.Empty;
+	        RegistrationResultsAuthType authType = RegistrationResultsAuthType.HTTPBASIC;
+	        RegistrationResultsFormat resultsFormat = RegistrationResultsFormat.FULL;
+
+	        UpdatePostbackInfo(applicationId, registrationId, resultsPostbackUrl, postBackLoginName, postBackLoginPassword, authType, resultsFormat);
+      	}
+
+
+      /// <summary>
+      /// Create a new Registration (Instance of a user taking a course)
+      /// </summary>
+      /// <param name="registrationId">Unique Identifier for the registration</param>
+      /// <param name="courseId">Unique Identifier for the course</param>
+      /// <param name="versionId">Optional versionID, if Int32.MinValue, latest course version is used.</param>
+      /// <param name="learnerId">Unique Identifier for the learner</param>
+      /// <param name="learnerFirstName">Learner's first name</param>
+      /// <param name="learnerLastName">Learner's last name</param>
+      /// <param name="resultsPostbackUrl">URL to which the server will post results back to</param>
+      /// <param name="authType">Type of Authentication used at results postback time</param>
+      /// <param name="postBackLoginName">If postback authentication is used, the logon name</param>
+      /// <param name="postBackLoginPassword">If postback authentication is used, the password</param>
+      /// <param name="resultsFormat">The Format of the results XML sent to the postback URL</param>
+      /// <param name="learnerTags">A comma separated list of learner tags to associate with this registration</param>
+      /// <param name="courseTags">A comma separated list of course tags to associate with this registration</param>
+      /// <param name="registrationTags">A comma separated list of tags to associate with this registration</param>
+      public void CreateRegistration(string registrationId, string courseId, int versionId, string learnerId,
+        string learnerFirstName, string learnerLastName, string resultsPostbackUrl,
+        RegistrationResultsAuthType authType, string postBackLoginName, string postBackLoginPassword,
+        RegistrationResultsFormat resultsFormat,
+        string learnerTags, string courseTags, string registrationTags)
+      {
+        ServiceRequest request = new ServiceRequest(configuration);
+        request.Parameters.Add("regid", registrationId);
+        request.Parameters.Add("courseid", courseId);
+        request.Parameters.Add("fname", learnerFirstName);
+        request.Parameters.Add("lname", learnerLastName);
+        request.Parameters.Add("learnerid", learnerId);
+
+              // Required on this signature but not by the actual service
+              request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
+              request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+
+              // Optional:
+              if (!String.IsNullOrEmpty(resultsPostbackUrl))
+                  request.Parameters.Add("postbackurl", resultsPostbackUrl);
+              if (!String.IsNullOrEmpty(postBackLoginName))
+                  request.Parameters.Add("urlname", postBackLoginName);
+              if (!String.IsNullOrEmpty(postBackLoginPassword))
+                  request.Parameters.Add("urlpass", postBackLoginPassword);
+              if (versionId != Int32.MinValue)
+                  request.Parameters.Add("versionid", versionId);
+
+              // Optional tags
+              if (!String.IsNullOrEmpty(learnerTags))
+                  request.Parameters.Add("learnerTags", learnerTags);
+              if (!String.IsNullOrEmpty(courseTags))
+                  request.Parameters.Add("courseTags", courseTags);
+              if (!String.IsNullOrEmpty(registrationTags))
+                  request.Parameters.Add("registrationTags", registrationTags);
+
+              request.CallService("rustici.registration.createRegistration");
+          }
 
         //TODO: Other overrides of createRegistration....
 
@@ -521,5 +569,69 @@ namespace RusticiSoftware.HostedEngine.Client
             XmlElement launchInfoElem = ((XmlElement)response.GetElementsByTagName("launch")[0]);
             return new LaunchInfo(launchInfoElem);
         }
-    }
+
+    	/// <summary>
+	    ///  Get the postback attributes that were set in a createRegistration or updatePostbackInfo call.
+	    /// </summary>
+	    /// <param name="applicationId">Your application id</param>
+	    /// <param name="registrationId">Specifies the registration id</param>
+	    /// <returns>PostackInfo</returns>
+	    public PostbackInfo GetPostbackInfo(string applicationId, string registrationId)
+	    {
+			ServiceRequest request = new ServiceRequest(configuration);
+			request.Parameters.Add("appid", applicationId);
+			request.Parameters.Add("regId", registrationId);
+			XmlDocument response = request.CallService("rustici.registration.getPostbackInfo");
+			XmlElement postbackInfoElem = ((XmlElement)response.GetElementsByTagName("postbackinfo")[0]);
+			return new PostbackInfo(postbackInfoElem);
+
+	    }
+	    /// <summary>
+	    /// This method provides a way to test a URL for posting registration results back to, as they would be posted when using the postbackurl in the createRegistration call. When called, an example registration result will be posted to the URL given, or else an error will be reported regarding why the post failed.
+	    /// </summary>
+	    /// <param name="postbackUrl">Specifies a URL for which to post activity and status data in real time as the course is completed</param>
+	    /// <returns>Rsp containing result and status code</returns>
+	    public Rsp TestRegistrationPostUrl(string postbackUrl)
+	    {
+			return TestRegistrationPostUrl(postbackUrl, RegistrationResultsAuthType.HTTPBASIC, "placeholderUrlName", "placeholderUrlPassword", RegistrationResultsFormat.ACTIVITY);
+	    }
+
+	    /// <summary>
+	    /// This method provides a way to test a URL for posting registration results back to, as they would be posted when using the postbackurl in the createRegistration call. When called, an example registration result will be posted to the URL given, or else an error will be reported regarding why the post failed.
+	    /// </summary>
+	    /// <param name="postbackUrl">Specifies a URL for which to post activity and status data in real time as the course is completed</param>
+	    /// <param name="authType">Optional parameter to specify how to authorize against the given postbackurl, can be "form" or "httpbasic". If form authentication, the username and password for authentication are submitted as form fields "username" and "password", and the registration data as the form field "data". If httpbasic authentication is used, the username and password are placed in the standard Authorization HTTP header, and the registration data is the body of the message (sent as text/xml content type). This field is set to "form" by default.</param>
+	    /// <param name="urlname">You can optionally specify a login name to be used for credentials when posting to the URL specified in postbackurl</param>
+	    /// <param name="urlpass">If credentials for the postbackurl are provided, this must be included, it is the password to be used in authorizing the postback of data to the URL specified by postbackurl</param>
+	    /// <param name="resultsFormat">This parameter allows you to specify a level of detail in the information that is posted back while the course is being taken. It may be one of three values: "course" (course summary), "activity" (activity summary, or "full" (full detail), and is set to "course" by default. The information will be posted as xml, and the format of that xml is specified below under the method "getRegistrationResult"</param>
+	    /// <returns>Rsp containing result and status code</returns>
+	    public Rsp TestRegistrationPostUrl(string postbackUrl, RegistrationResultsAuthType authType, string urlname, string urlpass, RegistrationResultsFormat resultsFormat)
+	    {
+			ServiceRequest request = new ServiceRequest(configuration);
+			request.Parameters.Add("postbackurl", postbackUrl);
+
+			//Api call will fail without a placeholder username and password at least:
+			if (!String.IsNullOrEmpty(urlname))
+			{
+				request.Parameters.Add("name", urlname);
+			}
+			else
+			{
+				request.Parameters.Add("name", "placeholderLoginName");
+			}
+
+			if (!String.IsNullOrEmpty(urlpass))
+			{
+				request.Parameters.Add("password", urlpass);
+			}
+			else
+			{
+				request.Parameters.Add("password", "placeholderLoginPassword");
+			}
+
+			XmlDocument response = request.CallService("rustici.registration.testRegistrationPostUrl");
+			XmlElement rspElement = ((XmlElement)response.GetElementsByTagName("rsp")[0]);
+			return new Rsp(rspElement);
+	    }
+	}
 }
