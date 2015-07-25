@@ -115,7 +115,6 @@ namespace RusticiSoftware.HostedEngine.Client
         RegistrationResultsFormat resultsFormat)
 		{
 			ServiceRequest request = new ServiceRequest(configuration);
-			request.Parameters.Add("appid", applicationId);
 			request.Parameters.Add("regid", registrationId);
 			request.Parameters.Add("postbackurl", resultsPostbackUrl);
 
@@ -576,15 +575,13 @@ namespace RusticiSoftware.HostedEngine.Client
 	    /// <param name="applicationId">Your application id</param>
 	    /// <param name="registrationId">Specifies the registration id</param>
 	    /// <returns>PostackInfo</returns>
-	    public PostbackInfo GetPostbackInfo(string applicationId, string registrationId)
+	    public PostbackInfo GetPostbackInfo(string registrationId)
 	    {
-			ServiceRequest request = new ServiceRequest(configuration);
-			request.Parameters.Add("appid", applicationId);
-			request.Parameters.Add("regId", registrationId);
-			XmlDocument response = request.CallService("rustici.registration.getPostbackInfo");
-			XmlElement postbackInfoElem = ((XmlElement)response.GetElementsByTagName("postbackinfo")[0]);
-			return new PostbackInfo(postbackInfoElem);
-
+			    ServiceRequest request = new ServiceRequest(configuration);
+			    request.Parameters.Add("regid", registrationId);
+			    XmlDocument response = request.CallService("rustici.registration.getPostbackInfo");
+			    XmlElement postbackInfoElem = ((XmlElement)response.GetElementsByTagName("postbackinfo")[0]);
+			    return new PostbackInfo(postbackInfoElem);
 	    }
 	    /// <summary>
 	    /// This method provides a way to test a URL for posting registration results back to, as they would be posted when using the postbackurl in the createRegistration call. When called, an example registration result will be posted to the URL given, or else an error will be reported regarding why the post failed.
