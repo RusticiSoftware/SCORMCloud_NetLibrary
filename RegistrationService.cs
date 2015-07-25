@@ -576,14 +576,14 @@ namespace RusticiSoftware.HostedEngine.Client
 	    /// <param name="applicationId">Your application id</param>
 	    /// <param name="registrationId">Specifies the registration id</param>
 	    /// <returns>PostackInfo</returns>
-	    public PostackInfo GetPostbackInfo(string applicationId, string registrationId)
+	    public PostbackInfo GetPostbackInfo(string applicationId, string registrationId)
 	    {
 			ServiceRequest request = new ServiceRequest(configuration);
 			request.Parameters.Add("appid", applicationId);
 			request.Parameters.Add("regId", registrationId);
 			XmlDocument response = request.CallService("rustici.registration.getPostbackInfo");
 			XmlElement postbackInfoElem = ((XmlElement)response.GetElementsByTagName("postbackinfo")[0]);
-			return new PostackInfo(postbackInfoElem);
+			return new PostbackInfo(postbackInfoElem);
 
 	    }
 	    /// <summary>
