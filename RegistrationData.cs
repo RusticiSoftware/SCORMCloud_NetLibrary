@@ -32,230 +32,231 @@ using System.Xml;
 
 namespace RusticiSoftware.HostedEngine.Client
 {
+  /// <summary>
+  /// Data class to hold high-level Registration Data
+  /// </summary>
+  public class RegistrationData
+  {
+    private string _registrationId;
+    private string _courseId;
+    private string _courseTitle;
+    private string _lastCourseVersionLaunched;
+    private string _learnerId;
+    private string _learnerFirstName;
+    private string _learnerLastName;
+    private string _email;
+
+    private DateTime _createDate;
+    private DateTime? _firstAccessDate;
+    private DateTime? _lastAccessDate;
+    private DateTime? _completedDate;
+
+    private List<InstanceData> _instances;
+
+
     /// <summary>
-    /// Data class to hold high-level Registration Data
+    /// Constructor which takes an XML node as returned by the web service.
     /// </summary>
-    public class RegistrationData
+    /// <param name="regDataEl"></param>
+    public RegistrationData(XmlElement registrationElem)
     {
-        private string _registrationId;
-        private string _courseId;
-        private string _courseTitle;
-        private string _lastCourseVersionLaunched;
-        private string _learnerId;
-        private string _learnerFirstName;
-        private string _learnerLastName;
-        private string _email;
+      this.RegistrationId = registrationElem.Attributes["id"].Value;
 
-        private DateTime _createDate;
-        private DateTime? _firstAccessDate;
-        private DateTime? _lastAccessDate;
-        private DateTime? _completedDate;
+      this.CourseId = registrationElem.Attributes["courseid"].Value;
 
-        private List<InstanceData> _instances;
+      this.CourseTitle = ((XmlElement)registrationElem
+                      .GetElementsByTagName("courseTitle")[0])
+                      .InnerText;
 
+      this.LastCourseVersionLaunched = ((XmlElement)registrationElem
+                      .GetElementsByTagName("lastCourseVersionLaunched")[0])
+                      .InnerText;
 
-        /// <summary>
-        /// Constructor which takes an XML node as returned by the web service.
-        /// </summary>
-        /// <param name="regDataEl"></param>
-        public RegistrationData(XmlElement registrationElem)
-        {
-            this.RegistrationId = registrationElem.Attributes["id"].Value;
+      this.LearnerId = ((XmlElement)registrationElem
+                      .GetElementsByTagName("learnerId")[0])
+                      .InnerText;
 
-            this.CourseId = registrationElem.Attributes["courseid"].Value;
+      this.LearnerFirstName = ((XmlElement)registrationElem
+                      .GetElementsByTagName("learnerFirstName")[0])
+                      .InnerText;
 
-            this.CourseTitle = ((XmlElement)registrationElem
-                            .GetElementsByTagName("courseTitle")[0])
-                            .InnerText;
+      this.LearnerLastName = ((XmlElement)registrationElem
+                      .GetElementsByTagName("learnerLastName")[0])
+                      .InnerText;
 
-            this.LastCourseVersionLaunched = ((XmlElement)registrationElem
-                            .GetElementsByTagName("lastCourseVersionLaunched")[0])
-                            .InnerText;
+      this.Email = ((XmlElement)registrationElem
+                      .GetElementsByTagName("email")[0])
+                      .InnerText;
 
-            this.LearnerId = ((XmlElement)registrationElem
-                            .GetElementsByTagName("learnerId")[0])
-                            .InnerText;
+      this.CreateDate = DateTime.Parse(((XmlElement)registrationElem
+                      .GetElementsByTagName("createDate")[0])
+                      .InnerText);
 
-            this.LearnerFirstName = ((XmlElement)registrationElem
-                            .GetElementsByTagName("learnerFirstName")[0])
-                            .InnerText;
+      this.FirstAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                      .GetElementsByTagName("firstAccessDate")[0])
+                      .InnerText);
 
-            this.LearnerLastName = ((XmlElement)registrationElem
-                            .GetElementsByTagName("learnerLastName")[0])
-                            .InnerText;
+      this.LastAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                      .GetElementsByTagName("lastAccessDate")[0])
+                      .InnerText);
 
-            this.Email = ((XmlElement)registrationElem
-                            .GetElementsByTagName("email")[0])
-                            .InnerText;
+      this.CompletedDate = Utils.ParseNullableDate(((XmlElement)registrationElem
+                      .GetElementsByTagName("completedDate")[0])
+                      .InnerText);
 
-            this.CreateDate = DateTime.Parse(((XmlElement)registrationElem
-                            .GetElementsByTagName("createDate")[0])
-                            .InnerText);
-
-            this.FirstAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
-                            .GetElementsByTagName("firstAccessDate")[0])
-                            .InnerText);
-
-            this.LastAccessDate = Utils.ParseNullableDate(((XmlElement)registrationElem
-                            .GetElementsByTagName("lastAccessDate")[0])
-                            .InnerText);
-
-            this.CompletedDate = Utils.ParseNullableDate(((XmlElement)registrationElem
-                            .GetElementsByTagName("completedDate")[0])
-                            .InnerText);
-
-            this.Instances = InstanceData.ConvertToInstanceDataList((XmlElement)registrationElem.GetElementsByTagName("instances")[0]);
-
-        }
-
-        /// <summary>
-        /// Helper method which takes the full XmlDocument as returned from the registration listing
-        /// web service and returns a List of RegistrationData objects.
-        /// </summary>
-        /// <param name="xmlDoc"></param>
-        /// <returns></returns>
-        public static List<RegistrationData> ConvertToRegistrationDataList(XmlDocument xmlDoc)
-        {
-            List<RegistrationData> allResults = new List<RegistrationData>();
-
-            XmlNodeList regDataList = xmlDoc.GetElementsByTagName("registration");
-            foreach (XmlElement regData in regDataList)
-            {
-                allResults.Add(new RegistrationData(regData));
-            }
-
-            return allResults;
-        }
-
-
-        
-        /// <summary>
-        /// Unique Identifier for this registration
-        /// </summary>
-        public string RegistrationId
-        {
-            get { return _registrationId; }
-            private set { _registrationId = value; }
-        }
-
-        /// <summary>
-        /// Course Identifier as specified at import-time
-        /// </summary>
-        public string CourseId
-        {
-            get { return _courseId; }
-            private set { _courseId = value; }
-        }
-
-        /// <summary>
-        /// The title of this course
-        /// </summary>
-        public string CourseTitle
-        {
-            get { return _courseTitle; }
-            private set { _courseTitle = value; }
-        }
-
-
-        /// <summary>
-        /// The last version of the course that was launched
-        /// </summary>
-        public string LastCourseVersionLaunched
-        {
-            get { return _lastCourseVersionLaunched; }
-            private set { _lastCourseVersionLaunched = value; }
-        }
-
-
-
-        /// <summary>
-        /// Learner Identifier as specified at import-time
-        /// </summary>
-        public string LearnerId
-        {
-            get { return _learnerId; }
-            private set { _learnerId = value; }
-        }
-
-
-        /// <summary>
-        /// Learner First Name as specified at import-time
-        /// </summary>
-        public string LearnerFirstName
-        {
-            get { return _learnerFirstName; }
-            private set { _learnerFirstName = value; }
-        }
-
-
-        /// <summary>
-        /// Learner Last Name as specified at import-time
-        /// </summary>
-        public string LearnerLastName
-        {
-            get { return _learnerLastName; }
-            private set { _learnerLastName = value; }
-        }
-
-
-        /// <summary>
-        /// Learner Email as specified at import-time
-        /// </summary>
-        public string Email
-        {
-            get { return _email; }
-            private set { _email = value; }
-        }
-
-
-        /// <summary>
-        /// Date in which the registration was created
-        /// </summary>
-        public DateTime CreateDate
-        {
-            get { return _createDate; }
-            private set { _createDate = value; }
-        }
-
-
-        /// <summary>
-        /// Date in which the registration was first accessed
-        /// </summary>
-        public DateTime? FirstAccessDate
-        {
-            get { return _firstAccessDate; }
-            private set { _firstAccessDate = value; }
-        }
-
-
-        /// <summary>
-        /// Date in which the registration was last accessed
-        /// </summary>
-        public DateTime? LastAccessDate
-        {
-            get { return _lastAccessDate; }
-            private set { _lastAccessDate = value; }
-        }
-
-
-        /// <summary>
-        /// Date in which the registration was completed
-        /// </summary>
-        public DateTime? CompletedDate
-        {
-            get { return _completedDate; }
-            private set { _completedDate = value; }
-        }
-
-
-        /// <summary>
-        /// List of Verions/Instances available for this course
-        /// </summary>
-        public List<InstanceData> Instances
-        {
-            get { return _instances; }
-            private set { _instances = value; }
-        }
+      this.Instances = InstanceData.ConvertToInstanceDataList((XmlElement)registrationElem.GetElementsByTagName("instances")[0]);
 
     }
+
+    /// <summary>
+    /// Helper method which takes the full XmlDocument as returned from the registration listing
+    /// web service and returns a List of RegistrationData objects.
+    /// </summary>
+    /// <param name="xmlDoc"></param>
+    /// <returns></returns>
+    public static List<RegistrationData> ConvertToRegistrationDataList(XmlDocument xmlDoc)
+    {
+      List<RegistrationData> allResults = new List<RegistrationData>();
+
+      XmlNodeList regDataList = xmlDoc.GetElementsByTagName("registration");
+      foreach (XmlElement regData in regDataList)
+      {
+        allResults.Add(new RegistrationData(regData));
+      }
+
+      return allResults;
+    }
+
+
+
+    /// <summary>
+    /// Unique Identifier for this registration
+    /// </summary>
+    public string RegistrationId
+    {
+      get { return _registrationId; }
+      private set { _registrationId = value; }
+    }
+
+    /// <summary>
+    /// Course Identifier as specified at import-time
+    /// </summary>
+    public string CourseId
+    {
+      get { return _courseId; }
+      private set { _courseId = value; }
+    }
+
+    /// <summary>
+    /// The title of this course
+    /// </summary>
+    public string CourseTitle
+    {
+      get { return _courseTitle; }
+      private set { _courseTitle = value; }
+    }
+
+
+    /// <summary>
+    /// The last version of the course that was launched
+    /// </summary>
+    public string LastCourseVersionLaunched
+    {
+      get { return _lastCourseVersionLaunched; }
+      private set { _lastCourseVersionLaunched = value; }
+    }
+
+
+
+    /// <summary>
+    /// Learner Identifier as specified at import-time
+    /// </summary>
+    public string LearnerId
+    {
+      get { return _learnerId; }
+      private set { _learnerId = value; }
+    }
+
+
+    /// <summary>
+    /// Learner First Name as specified at import-time
+    /// </summary>
+    public string LearnerFirstName
+    {
+      get { return _learnerFirstName; }
+      private set { _learnerFirstName = value; }
+    }
+
+
+    /// <summary>
+    /// Learner Last Name as specified at import-time
+    /// </summary>
+    public string LearnerLastName
+    {
+      get { return _learnerLastName; }
+      private set { _learnerLastName = value; }
+    }
+
+
+    /// <summary>
+    /// Learner Email as specified at import-time
+    /// </summary>
+    public string Email
+    {
+      get { return _email; }
+      private set { _email = value; }
+    }
+
+
+    /// <summary>
+    /// Date in which the registration was created
+    /// </summary>
+    public DateTime CreateDate
+    {
+      get { return _createDate; }
+      private set { _createDate = value; }
+    }
+
+
+    /// <summary>
+    /// Date in which the registration was first accessed
+    /// </summary>
+    public DateTime? FirstAccessDate
+    {
+      get { return _firstAccessDate; }
+      private set { _firstAccessDate = value; }
+    }
+
+
+    /// <summary>
+    /// Date in which the registration was last accessed
+    /// </summary>
+    public DateTime? LastAccessDate
+    {
+      get { return _lastAccessDate; }
+      private set { _lastAccessDate = value; }
+    }
+
+
+    /// <summary>
+    /// Date in which the registration was completed
+    /// </summary>
+    public DateTime? CompletedDate
+    {
+      get { return _completedDate; }
+      private set { _completedDate = value; }
+    }
+
+
+    /// <summary>
+    /// List of Verions/Instances available for this course
+    /// </summary>
+    public List<InstanceData> Instances
+    {
+      get { return _instances; }
+      private set { _instances = value; }
+    }
+
+  }
+
 }
