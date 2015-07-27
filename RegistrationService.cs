@@ -592,11 +592,10 @@ namespace RusticiSoftware.HostedEngine.Client
     /// This method provides a way to test a URL for posting registration results back to, as they would be posted when using the postbackurl in the createRegistration call. When called, an example registration result will be posted to the URL given, or else an error will be reported regarding why the post failed.
     /// </summary>
     /// <param name="postbackUrl">Specifies a URL for which to post activity and status data in real time as the course is completed</param>
-    /// <param name="authType">Optional parameter to specify how to authorize against the given postbackurl, can be "form" or "httpbasic". If form authentication, the username and password for authentication are submitted as form fields "username" and "password", and the registration data as the form field "data". If httpbasic authentication is used, the username and password are placed in the standard Authorization HTTP header, and the registration data is the body of the message (sent as text/xml content type). This field is set to "form" by default.</param>
     /// <returns>Rsp containing result and status code</returns>
-    public Rsp TestRegistrationPostUrl(string postbackUrl, RegistrationResultsAuthType authType)
+    public Rsp TestRegistrationPostUrl(string postbackUrl)
     {
-      return TestRegistrationPostUrl(postbackUrl, authType, "placeholderUrlName", "placeholderUrlPassword", RegistrationResultsFormat.ACTIVITY);
+      return TestRegistrationPostUrl(postbackUrl, RegistrationResultsAuthType.HTTPBASIC, "placeholderUrlName", "placeholderUrlPassword", RegistrationResultsFormat.ACTIVITY);
     }
 
     /// <summary>
@@ -631,6 +630,9 @@ namespace RusticiSoftware.HostedEngine.Client
       {
         request.Parameters.Add("password", "placeholderLoginPassword");
       }
+
+      request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
+      request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
       XmlDocument response = request.CallService("rustici.registration.testRegistrationPostUrl");
       XmlElement rspElement = ((XmlElement)response.GetElementsByTagName("rsp")[0]);
