@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Web;
 using System.Xml;
 
 namespace RusticiSoftware.HostedEngine.Client
@@ -84,11 +85,11 @@ namespace RusticiSoftware.HostedEngine.Client
 
       // Optional:
       if (!String.IsNullOrEmpty(resultsPostbackUrl))
-        request.Parameters.Add("postbackurl", resultsPostbackUrl);
+        request.Parameters.Add("url", resultsPostbackUrl);
       if (!String.IsNullOrEmpty(postBackLoginName))
-        request.Parameters.Add("urlname", postBackLoginName);
+        request.Parameters.Add("name", postBackLoginName);
       if (!String.IsNullOrEmpty(postBackLoginPassword))
-        request.Parameters.Add("urlpass", postBackLoginPassword);
+        request.Parameters.Add("password", postBackLoginPassword);
       if (versionId != Int32.MinValue)
         request.Parameters.Add("versionid", versionId);
 
@@ -116,18 +117,30 @@ namespace RusticiSoftware.HostedEngine.Client
     {
       ServiceRequest request = new ServiceRequest(configuration);
       request.Parameters.Add("regid", registrationId);
-      request.Parameters.Add("postbackurl", resultsPostbackUrl);
+      request.Parameters.Add("url", "[" + HttpUtility.UrlEncode(resultsPostbackUrl) + "]");
 
       // Required on this signature but not by the actual service
       request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-      request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+      request.Parameters.Add("resultformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
       // Optional:
       if (!String.IsNullOrEmpty(postBackLoginName))
-        request.Parameters.Add("urlname", postBackLoginName);
-      if (!String.IsNullOrEmpty(postBackLoginPassword))
-        request.Parameters.Add("urlpass", postBackLoginPassword);
+      {
+        request.Parameters.Add("name", postBackLoginName);
+      }
+      else
+      {
+        request.Parameters.Add("name", "PlaceholderName");
+      }
 
+      if (!String.IsNullOrEmpty(postBackLoginPassword))
+      {
+        request.Parameters.Add("password", postBackLoginPassword);
+      }
+      else
+      {
+        request.Parameters.Add("password", "PlaceholderPassword");
+      }
       request.CallService("rustici.registration.updatePostbackInfo");
     }
 
@@ -180,7 +193,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
       // Required on this signature but not by the actual service
       request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-      request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+      request.Parameters.Add("resultformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
       // Optional:
       if (!String.IsNullOrEmpty(resultsPostbackUrl))
@@ -632,7 +645,7 @@ namespace RusticiSoftware.HostedEngine.Client
       }
 
       request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-      request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+      request.Parameters.Add("resultformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
       XmlDocument response = request.CallService("rustici.registration.testRegistrationPostUrl");
       XmlElement rspElement = ((XmlElement)response.GetElementsByTagName("rsp")[0]);
