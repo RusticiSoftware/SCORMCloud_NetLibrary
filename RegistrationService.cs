@@ -193,7 +193,7 @@ namespace RusticiSoftware.HostedEngine.Client
 
             // Required on this signature but not by the actual service
             request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-            request.Parameters.Add("resultformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+            request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
             // Optional:
             if (!String.IsNullOrEmpty(resultsPostbackUrl))
@@ -645,7 +645,7 @@ namespace RusticiSoftware.HostedEngine.Client
             }
 
             request.Parameters.Add("authtype", Enum.GetName(authType.GetType(), authType).ToLower());
-            request.Parameters.Add("resultformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
+            request.Parameters.Add("resultsformat", Enum.GetName(resultsFormat.GetType(), resultsFormat).ToLower());
 
             XmlDocument response = request.CallService("rustici.registration.testRegistrationPostUrl");
             XmlElement rspElement = ((XmlElement)response.GetElementsByTagName("rsp")[0]);
