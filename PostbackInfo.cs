@@ -40,6 +40,7 @@ namespace RusticiSoftware.HostedEngine.Client
     private string _registrationResultsAuthType;
     private string _learnerLogin;
     private string _learnerPassword;
+    private string _resultsFormat;
 
 
     /// <summary>
@@ -52,10 +53,10 @@ namespace RusticiSoftware.HostedEngine.Client
       this.RegistrationId = postbackInfoElem.GetAttribute("regid");
 
       this.Url = ((XmlElement)postbackInfoElem.GetElementsByTagName("url")[0]).InnerText;
-      //this.Url = postbackInfoElem.GetAttribute("url");
       this.LearnerLogin = ((XmlElement)postbackInfoElem.GetElementsByTagName("login")[0]).InnerText;
       this.LearnerPassword = ((XmlElement)postbackInfoElem.GetElementsByTagName("password")[0]).InnerText;
       this.RegistrationResultsAuthType = ((XmlElement)postbackInfoElem.GetElementsByTagName("authtype")[0]).InnerText;
+      this.ResultsFormat = ((XmlElement)postbackInfoElem.GetElementsByTagName("resultsformat")[0]).InnerText;
     }
 
     /// <summary>
@@ -90,6 +91,12 @@ namespace RusticiSoftware.HostedEngine.Client
     {
       get { return _learnerPassword; }
       private set { _learnerPassword = value; }
+    }
+
+    public string ResultsFormat
+    {
+        get { return _resultsFormat; }
+        private set { _resultsFormat = value; }
     }
 
 
