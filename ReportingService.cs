@@ -90,7 +90,7 @@ namespace RusticiSoftware.HostedEngine.Client
         {
             string reportAuth = this.GetReportageAuth(ReportageNavPermission.FREENAV, true);
 
-            string reportUrl = ScormCloud.ReportingService.GetReportageServiceUrl() + "Reportage/reportage.php?appId=" + this.configuration.AppId;
+            string reportUrl = this.GetReportageServiceUrl() + "Reportage/reportage.php?appId=" + this.configuration.AppId;
             
             return this.GetReportUrl(reportAuth,reportUrl);
         }
