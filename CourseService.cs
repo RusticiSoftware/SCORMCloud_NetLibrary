@@ -104,6 +104,33 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Import a SCORM .pif (zip file) asynchronously from the local filesystem.
+        /// </summary>
+        /// <param name="courseId">Unique Identifier for this course.</param>
+        /// <param name="absoluteFilePathToZip">Full path to the .zip file</param>
+        /// <param name="itemIdToImport">ID of manifest item to import. If null, root organization is imported</param>
+        /// <param name="permissionDomain">A permission domain to associate this course with, 
+        /// for ftp access service (see ftp service below). 
+        /// If the domain specified does not exist, the course will be placed in the default permission domain</param>
+        /// <returns>Token ID of Asynchronous Import</returns>
+        public String ImportCourseAsync(string courseId, string absoluteFilePathToZip,
+            string itemIdToImport, string permissionDomain)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            if (!String.IsNullOrEmpty(itemIdToImport))
+                request.Parameters.Add("itemid", itemIdToImport);
+            if (!String.IsNullOrEmpty(itemIdToImport))
+                request.Parameters.Add("pd", permissionDomain);
+            request.FileToPost = absoluteFilePathToZip;
+            XmlDocument response = request.CallService("rustici.course.importCourseAsync");
+            String tokenId = ((XmlElement)response
+                        .GetElementsByTagName("token")[0])
+                        .FirstChild.InnerText;
+            return tokenId;
+        }
+
+        /// <summary>
         /// Get a URL to target a file import form for importing a course to the SCORM Cloud.
         /// </summary>
         /// <param name="courseId">the desired id for the course</param>
