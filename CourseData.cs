@@ -42,6 +42,7 @@ namespace RusticiSoftware.HostedEngine.Client
         private int numberOfVersions;
         private int numberOfRegistrations;
         private String title;
+        private List<String> tags;
 
         /// <summary>
         /// Purpose of this class is to map the return xml from the course listing
@@ -54,6 +55,11 @@ namespace RusticiSoftware.HostedEngine.Client
             this.numberOfVersions = Convert.ToInt32(courseDataElement.Attributes["versions"].Value);
             this.numberOfRegistrations = Convert.ToInt32(courseDataElement.Attributes["registrations"].Value);
             this.title = courseDataElement.Attributes["title"].Value;
+            tags = new List<string>();
+
+            XmlNodeList tagDataList = courseDataElement.GetElementsByTagName("tags");
+            foreach (XmlElement tag in tagDataList)
+                this.tags.Add(tag.InnerText);
         }
 
         /// <summary>
