@@ -87,6 +87,12 @@
   <ItemGroup>
     <Folder Include="Types\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Readme.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)"  "C:\tfs\CyberTrain\CyberTrain3\DLL\$(TargetFileName)"</PostBuildEvent>
