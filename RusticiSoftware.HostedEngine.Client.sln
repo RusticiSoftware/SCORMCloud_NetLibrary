@@ -1,7 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusticiSoftware.HostedEngine.Client", "RusticiSoftware.HostedEngine.Client.csproj", "{11AF12EE-C99E-4A73-8BE2-1FC016867BC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3A7D0CB-70E5-4BF6-9C20-EF7CCA80E027}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+		README.txt = README.txt
+		RusticiSoftware.HostedEngine.Client.1.1.0.0.nupkg = RusticiSoftware.HostedEngine.Client.1.1.0.0.nupkg
+		RusticiSoftware.HostedEngine.Client.nuspec = RusticiSoftware.HostedEngine.Client.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>RusticiSoftware.HostedEngine.Client</id>
+    <version>1.1.0.0</version>
+    <title>ScormCloud</title>
+    <authors>Rustici Software</authors>
+    <owners>Rustici Software</owners>
+    <licenseUrl>https://github.com/RusticiSoftware/SCORMCloud_NetLibrary</licenseUrl>
+    <projectUrl>https://github.com/RusticiSoftware/SCORMCloud_NetLibrary</projectUrl>
+    <iconUrl>http://cdn3.scorm.com/wp-content/themes/cabedge/scorm-cloud/images/sc-img.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET Client api for Hosted SCORM Engine Web Services</description>
+    <summary>The SCORM Cloud .Net Library is a C# library intended to aid in the integration of the SCORM Cloud service API into .Net 2.0+ applications. This library does not cover all possible SCORM Cloud service</summary>
+    <releaseNotes>
+      See :
+      https://github.com/RusticiSoftware/SCORMCloud_NetLibrary
+    </releaseNotes>
+    <copyright>Copyright ©  2009</copyright>
+    <tags>e-learning lms SCORM</tags>
+  </metadata>
+</package>
