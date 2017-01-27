@@ -663,7 +663,7 @@ namespace RusticiSoftware.HostedEngine.Client
             // params as well the actual method params.
             IDictionary<string, object> parameterMap = new Dictionary<string, object>();
             parameterMap.Add("action", "properties.view");
-            parameterMap.Add("package", "AppId|" + configuration.AppId + "!PackageId|" + courseId);
+            parameterMap.Add("package", "ApiCourseId|" + courseId);
             parameterMap.Add("appid", configuration.AppId);
             parameterMap.Add("ts", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
             if (!String.IsNullOrEmpty(notificationFrameUrl))
