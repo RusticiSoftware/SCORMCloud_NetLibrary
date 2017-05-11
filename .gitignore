@@ -24,6 +24,7 @@
 *.tmp
 *.vspscc
 .builds
+.nupkg
 
 # ReSharper 
 _ReSharper*
