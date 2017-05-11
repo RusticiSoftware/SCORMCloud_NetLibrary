@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>rusticisoftware.cloud.netsdk</id>
+    <id>RusticiSoftware.HostedEngine.Client</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>rusticisoftware</authors>
-    <owners>rusticisoftware</owners>
+    <authors>rustici-software-systems</authors>
+    <owners>rustici-software-systems</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial publish to nuget.</releaseNotes>
