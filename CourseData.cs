@@ -45,6 +45,11 @@ namespace RusticiSoftware.HostedEngine.Client
         private List<String> tags;
 
         /// <summary>
+        /// The size of this course
+        /// </summary>
+        public int Size { get; private set; }
+
+        /// <summary>
         /// Purpose of this class is to map the return xml from the course listing
         /// web service into an object.  This is the main constructor.
         /// </summary>
@@ -55,6 +60,7 @@ namespace RusticiSoftware.HostedEngine.Client
             this.numberOfVersions = Convert.ToInt32(courseDataElement.Attributes["versions"].Value);
             this.numberOfRegistrations = Convert.ToInt32(courseDataElement.Attributes["registrations"].Value);
             this.title = courseDataElement.Attributes["title"].Value;
+            this.Size = Convert.ToInt32(courseDataElement.Attributes["size"].Value);
             tags = new List<string>();
 
             XmlNodeList tagDataList = courseDataElement.GetElementsByTagName("tags");

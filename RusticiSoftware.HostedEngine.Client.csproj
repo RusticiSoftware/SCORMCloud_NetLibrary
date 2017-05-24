@@ -43,8 +43,11 @@
   <ItemGroup>
     <Compile Include="AsyncImportResult.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="ApplicationService.cs" />
+    <Compile Include="ApplicationInfo.cs" />
     <Compile Include="PostbackInfo.cs" />
     <Compile Include="Rsp.cs" />
+    <Compile Include="ScormAppCloud.cs" />
     <Compile Include="TaggingService.cs" />
     <Compile Include="CourseData.cs" />
     <Compile Include="CustomWebClient.cs">
@@ -67,6 +70,7 @@
     <Compile Include="ReportingService.cs" />
     <Compile Include="UploadResult.cs" />
     <Compile Include="UploadToken.cs" />
+    <Compile Include="SecretKey.cs" />
     <Compile Include="UserInvitationStatus.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ImportResult.cs" />

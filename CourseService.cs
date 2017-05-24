@@ -341,6 +341,24 @@ namespace RusticiSoftware.HostedEngine.Client
             request.CallService("rustici.course.deleteCourse");
         }
 
+        public CourseData GetCourseDetail(string courseId, int versionId = Int32.MinValue)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            if (versionId != Int32.MinValue)
+                request.Parameters.Add("versionid", versionId);
+            XmlDocument response = request.CallService("rustici.course.getCourseDetail");
+
+            CourseData courseData = null;
+            // Map the response to coursedata
+            var elements = response.GetElementsByTagName("course");
+            if (elements.Count > 0)
+                courseData = new CourseData(elements[0] as XmlElement);
+
+            return courseData;
+        }
+
+
         /// <summary>
         /// Retrieve a list of high-level data about all courses owned by the 
         /// configured appId that meet the filter's criteria.

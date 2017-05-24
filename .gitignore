@@ -29,3 +29,6 @@
 # ReSharper 
 _ReSharper*
 
+Backup/
+.vs/
+
