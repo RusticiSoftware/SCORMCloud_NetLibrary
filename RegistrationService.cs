@@ -555,6 +555,17 @@ namespace RusticiSoftware.HostedEngine.Client
             return request.ConstructUrl("rustici.registration.launch");
         }
 
+        /// <summary>
+        /// Gets the url to directly launch/view the course registration in a browser
+        /// </summary>
+        /// <param name="regid">Unique Identifier for the registration</param>
+        /// <param name="redirecturl">Upon exit, the url that the SCORM player will redirect to</param>
+        /// <param name="cssurl">Absolute url that points to a custom player style sheet</param>
+        /// <param name="saveDebugLogPointerUrl">Url that the server will postback a "pointer" url regarding</param>
+        /// <param name="player">Launch using alternative players like "modern"</param>
+        /// <param name="forceFrameset">Force course to launch using frameset (needed to play in mobile webview)</param>
+        /// <param name="parameters">Dictionary of parameters</param>
+        /// <returns>URL to launch</returns>
         public string GetLaunchUrl(Dictionary<string, object> parameters)
         {
             var request = new ServiceRequest(configuration);
