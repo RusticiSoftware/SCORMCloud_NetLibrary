@@ -555,6 +555,15 @@ namespace RusticiSoftware.HostedEngine.Client
             return request.ConstructUrl("rustici.registration.launch");
         }
 
+        public string GetLaunchUrl(Dictionary<string, object> parameters)
+        {
+            var request = new ServiceRequest(configuration);
+            foreach (var parameter in parameters)
+                request.Parameters.Add(parameter.Key, parameter.Value);
+
+            return request.ConstructUrl("rustici.registration.launch");
+        }
+
         /// <summary>
         /// Returns list of launch info objects, each of which describe a particular launch,
         /// but note, does not include the actual history log for the launch. To get launch
