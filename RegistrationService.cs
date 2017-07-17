@@ -555,7 +555,7 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <param name="debugLogPointerUrl">Url that the server will postback a "pointer" url regarding
         /// a saved debug log that resides on s3</param>
         /// <param name="parameters">Dictionary for any additional parameters that could be passed along in the request</param>
-        public string GetLaunchUrl(string registrationId, string redirectOnExitUrl, string cssUrl, string debugLogPointerUrl, Dictionary<string, object> parameters)
+        public string GetLaunchUrl(string registrationId, string redirectOnExitUrl, string cssUrl, string debugLogPointerUrl, IDictionary<string, object> parameters)
         {
             ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("regid", registrationId);
