@@ -33,7 +33,10 @@ About:
 The SCORM Cloud .Net Library is a C# library intended to aid in the integration of the SCORM Cloud service API into .Net 2.0+ applications.  This library does not cover all possible SCORM Cloud service API calls, but it does cover the basics. Descriptions of the full API can be found here: http://cloud.scorm.com/EngineWebServices/doc/SCORMCloudAPI.html
 
 Using the Library:
-To use the library, open the project in Visual Studio and perform a build.  Then add a reference to the library dll to your integration project solution.
+This library can be found on Nuget at http://nuget.org/xxxxxx/yyyyyy.  You can add a reference to your project using "Manage NuGet Packages" inside Visual Studio.
+
+
+Another option is to build the project yourself, creating a .dll that you can add to your project.  Simply download this project's source code and build it.
 
 There is also a .Net Demo application available for download here: https://github.com/RusticiSoftware/SCORMCloud_NetDemoApp
 The demo app is meant to provide examples for how to use many of the basic library calls.
