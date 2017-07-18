@@ -543,6 +543,20 @@ namespace RusticiSoftware.HostedEngine.Client
         /// a saved debug log that resides on s3</param>
         public string GetLaunchUrl(string registrationId, string redirectOnExitUrl, string cssUrl, string debugLogPointerUrl)
         {
+            return GetLaunchUrl(registrationId, redirectOnExitUrl, cssUrl, debugLogPointerUrl, new Dictionary<string, object>());
+        }
+
+        /// <summary>
+        /// Gets the url to directly launch/view the course registration in a browser
+        /// </summary>
+        /// <param name="registrationId">Unique Identifier for the registration</param>
+        /// <param name="redirectOnExitUrl">Upon exit, the url that the SCORM player will redirect to</param>
+        /// <returns>URL to launch</returns>
+        /// <param name="debugLogPointerUrl">Url that the server will postback a "pointer" url regarding
+        /// a saved debug log that resides on s3</param>
+        /// <param name="parameters">Dictionary for any additional parameters that could be passed along in the request</param>
+        public string GetLaunchUrl(string registrationId, string redirectOnExitUrl, string cssUrl, string debugLogPointerUrl, IDictionary<string, object> parameters)
+        {
             ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("regid", registrationId);
             if (!String.IsNullOrEmpty(redirectOnExitUrl))
@@ -551,6 +565,9 @@ namespace RusticiSoftware.HostedEngine.Client
                 request.Parameters.Add("cssurl", cssUrl);
             if (!String.IsNullOrEmpty(debugLogPointerUrl))
                 request.Parameters.Add("saveDebugLogPointerUrl", debugLogPointerUrl);
+            if (parameters != null)
+                foreach (var parameter in parameters)
+                    request.Parameters.Add(parameter.Key, parameter.Value);
 
             return request.ConstructUrl("rustici.registration.launch");
         }
