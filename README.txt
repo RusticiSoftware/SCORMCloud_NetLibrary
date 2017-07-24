@@ -1,6 +1,6 @@
 Software License Agreement (BSD License)
 
-Copyright (c) 2010-2012, Rustici Software, LLC
+Copyright (c) 2010-2017, Rustici Software, LLC
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -40,13 +40,20 @@ The demo app is meant to provide examples for how to use many of the basic libra
 
 Updates:
 
-v1.2.1
+v1.3.0
+* removes rustici.course.versionCourse API.
+* adds ability to pass params in for launch URL.
+
+v1.2.0
+* added to Nuget repository
+
+v1.1.4
 8.29.12
 * Modified the CourseService to update the methods of importing courses and to add support for the 'exists' service call. Refer to the .Net HostedDemoApp UploadLearning.aspx to see the prescribed import process. 
 * Removed the course import web control since it uses the old methods of update.
 
 
-v1.2.0
+v1.1.3
 5.15.2012
 * Added the InvitationService to the Library 
 

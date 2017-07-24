@@ -263,48 +263,6 @@ namespace RusticiSoftware.HostedEngine.Client
             return new AsyncImportResult(response);
         }
 
-
-        /// <summary>
-        /// Import new version of an existing course from a SCORM .pif (zip file)
-        /// on the local filesystem.
-        /// </summary>
-        /// <param name="courseId">Unique Identifier for this course.</param>
-        /// <param name="absoluteFilePathToZip">Full path to the .zip file</param>
-        /// <returns>List of Import Results</returns>
-        public List<ImportResult> VersionCourse(string courseId, string absoluteFilePathToZip)
-        {
-            UploadResult uploadResult = manager.UploadService.UploadFile(absoluteFilePathToZip, null);
-            String server = uploadResult.server;
-            String location = uploadResult.location;
-            List<ImportResult> results = null;
-            try {
-                results = VersionUploadedCourse(courseId, location, server);
-            }
-            finally {
-                manager.UploadService.DeleteFile(location);
-            }
-            return results;
-        }
-
-        /// <summary>
-        /// Import new version of an existing course from a SCORM .pif (zip file) from 
-        /// an existing .zip file on the Hosted SCORM Engine server.
-        /// </summary>
-        /// <param name="courseId">Unique Identifier for this course.</param>
-        /// <param name="path">Path to file, relative to your upload root</param>
-        /// <returns>List of Import Results</returns>
-        public List<ImportResult> VersionUploadedCourse(string courseId, string path, string server)
-        {
-            ServiceRequest request = new ServiceRequest(configuration);
-            if (server != null) {
-                request.Server = server;
-            }
-            request.Parameters.Add("courseid", courseId);
-            request.Parameters.Add("path", path);
-            XmlDocument response = request.CallService("rustici.course.versionCourse");
-            return ImportResult.ConvertToImportResults(response);
-        }
-
         /// <summary>
         /// Delete the specified course
         /// </summary>
