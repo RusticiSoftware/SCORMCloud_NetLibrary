@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="AsyncImportResult.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="CourseDetail.cs" />
+    <Compile Include="CourseVersion.cs" />
     <Compile Include="PostbackInfo.cs" />
     <Compile Include="Rsp.cs" />
     <Compile Include="TaggingService.cs" />

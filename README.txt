@@ -40,6 +40,9 @@ The demo app is meant to provide examples for how to use many of the basic libra
 
 Updates:
 
+v1.4.0
+* adds rustici.course.courseDetail API.
+
 v1.3.0
 * removes rustici.course.versionCourse API.
 * adds ability to pass params in for launch URL.
