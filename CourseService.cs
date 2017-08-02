@@ -327,6 +327,18 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Retrieve the course detail for a particular course
+        /// </summary>
+        /// <returns>CourseDetail object</returns>
+        public CourseDetail GetCourseDetail(string courseId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("courseid", courseId);
+            XmlDocument response = request.CallService("rustici.course.getCourseDetail");
+            return new CourseDetail(response);
+        }
+
+        /// <summary>
         /// Retrieve the list of course attributes associated with this course.  If
         /// multiple versions of the course exist, the attributes of the latest version
         /// are returned.

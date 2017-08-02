@@ -8,7 +8,7 @@
     <owners>rustici-software-systems</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Removes rustici.course.versionCourse and adds ability to pass params to Launch URL.</releaseNotes>
+    <releaseNotes>Adds rustici.course.getCourseDetail API.</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>SCORM rustici elearning AICC xAPI</tags>
   </metadata>
