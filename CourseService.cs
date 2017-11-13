@@ -151,7 +151,7 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <param name="courseId">the desired id for the course</param>
         /// <param name="redirectUrl">the url for the browser to be redirected to after import</param>
         /// <returns></returns>
-        public String GetImportCourseAsyncUrl(int courseId, string redirectUrl)
+        public String GetImportCourseAsyncUrl(string courseId, string redirectUrl)
         {
             ServiceRequest request = new ServiceRequest(ScormCloud.Configuration);
             request.Parameters.Add("courseid", courseId);
