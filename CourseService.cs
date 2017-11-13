@@ -144,7 +144,21 @@ namespace RusticiSoftware.HostedEngine.Client
                 request.Parameters.Add("redirecturl", redirectUrl);
             return request.ConstructUrl("rustici.course.importCourse");
         }
-        
+
+        /// <summary>
+        /// Get a URL to target a file import form for importing a course to the SCORM Cloud asynchronously.
+        /// </summary>
+        /// <param name="courseId">the desired id for the course</param>
+        /// <param name="redirectUrl">the url for the browser to be redirected to after import</param>
+        /// <returns></returns>
+        public String GetImportCourseAsyncUrl(int courseId, string redirectUrl)
+        {
+            ServiceRequest request = new ServiceRequest(ScormCloud.Configuration);
+            request.Parameters.Add("courseid", courseId);
+            if (!String.IsNullOrEmpty(redirectUrl))
+                request.Parameters.Add("redirecturl", redirectUrl);
+            return request.ConstructUrl("rustici.course.importCourseAsync");
+        }
 
         /// <summary>
         /// Import a SCORM .pif (zip file) from an existing .zip file on the
