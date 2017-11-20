@@ -68,7 +68,7 @@ namespace RusticiSoftware.HostedEngine.Client
                 this.versions.Add(new CourseVersion(version));
 
             tags = new List<string>();
-            XmlNodeList tagDataList = courseDetail.GetElementsByTagName("tags");
+            XmlNodeList tagDataList = courseDetail.GetElementsByTagName("tag");
             foreach (XmlElement tag in tagDataList)
                 this.tags.Add(tag.InnerText);
 
