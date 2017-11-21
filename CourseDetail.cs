@@ -63,25 +63,25 @@ namespace RusticiSoftware.HostedEngine.Client
             this.title = courseDetail.Attributes["title"].Value;
 
             versions = new List<CourseVersion>();
-            XmlNodeList versionList = courseDetail.GetElementsByTagName("versions");
-            foreach (XmlElement version in versionList)
+            XmlNodeList versionListItems = courseDetail.GetElementsByTagName("version");
+            foreach (XmlElement version in versionListItems)
                 this.versions.Add(new CourseVersion(version));
 
             tags = new List<string>();
-            XmlNodeList tagDataList = courseDetail.GetElementsByTagName("tags");
+            XmlNodeList tagDataList = courseDetail.GetElementsByTagName("tag");
             foreach (XmlElement tag in tagDataList)
                 this.tags.Add(tag.InnerText);
 
             XmlNodeList learningStandardList = courseDetail.GetElementsByTagName("learningStandard");
             if (learningStandardList.Count > 0)
             {
-                this.learningStandard = learningStandardList.Item(0).Value;
+                this.learningStandard = learningStandardList.Item(0).FirstChild.Value;
             }
 
             XmlNodeList tincanActivityIdList = courseDetail.GetElementsByTagName("tincanActivivityId");
             if (tincanActivityIdList.Count > 0)
             {
-                this.tincanActivityId = tincanActivityIdList.Item(0).Value;
+                this.tincanActivityId = tincanActivityIdList.Item(0).FirstChild.Value;
             }
         }
 

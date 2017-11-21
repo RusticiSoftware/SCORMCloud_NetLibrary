@@ -12,8 +12,8 @@ namespace RusticiSoftware.HostedEngine.Client
 
         public CourseVersion(XmlElement versionElement)
         {
-            this.versionId = versionElement.GetElementsByTagName("versionId").Item(0).Value;
-            this.updateDate = versionElement.GetElementsByTagName("updateDate").Item(0).Value;
+            this.versionId = versionElement.GetElementsByTagName("versionId").Item(0).FirstChild.Value;
+            this.updateDate = versionElement.GetElementsByTagName("updateDate").Item(0).FirstChild.Value;
         }
 
         /// <summary>
