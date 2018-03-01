@@ -1,3 +1,6 @@
+# Visual Studio cache/options directory
+.vs/
+
 # User-specific files
 *.suo
 *.user
