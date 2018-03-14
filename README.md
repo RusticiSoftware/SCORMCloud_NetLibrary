@@ -25,11 +25,11 @@ From the command line:
 
 From Package Manager:
 
-    Install-Package RusticiSoftware.HostedEngine.Client -Version 1.5.0
+    Install-Package RusticiSoftware.HostedEngine.Client -Version 1.6.0
 
 From .NET CLI:
 
-    dotnet add package RusticiSoftware.HostedEngine.Client --version 1.5.0
+    dotnet add package RusticiSoftware.HostedEngine.Client --version 1.6.0
 
 ### Configuration
 
@@ -174,7 +174,7 @@ escalated quickly to real, live developers.
 
 
 [1]: https://cloud.scorm.com/docs/quick_start.html
-[2]: https://www.nuget.org/packages/RusticiSoftware.HostedEngine.Client/1.5.0
+[2]: https://www.nuget.org/packages/RusticiSoftware.HostedEngine.Client/1.6.0
 [3]: https://cloud.scorm.com/docs/api_reference/index.html
 [4]: https://cloud.scorm.com/docs/api_reference/registration.html#exists
 [5]: https://cloud.scorm.com/docs/api_reference/registration.html#createRegistration
