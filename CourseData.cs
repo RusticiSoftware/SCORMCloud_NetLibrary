@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Xml;
 
 namespace RusticiSoftware.HostedEngine.Client
@@ -112,6 +113,13 @@ namespace RusticiSoftware.HostedEngine.Client
         public string Title
         {
             get { return title; }
+        }
+
+        /// <summary>
+        /// Tags on this course
+        /// </summary>
+        public ReadOnlyCollection<string> Tags {
+            get { return tags.AsReadOnly(); }
         }
     }
 }
