@@ -58,7 +58,7 @@ namespace RusticiSoftware.HostedEngine.Client
             this.title = courseDataElement.Attributes["title"].Value;
             tags = new List<string>();
 
-            XmlNodeList tagDataList = courseDataElement.GetElementsByTagName("tags");
+            XmlNodeList tagDataList = courseDataElement.GetElementsByTagName("tag");
             foreach (XmlElement tag in tagDataList)
                 this.tags.Add(tag.InnerText);
         }
