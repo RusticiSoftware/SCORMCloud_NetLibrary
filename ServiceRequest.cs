@@ -133,6 +133,12 @@ namespace RusticiSoftware.HostedEngine.Client
             return GetFileResponseFromUrl(toFileName, ConstructUrl(methodName));
         }
 
+	public byte[] GetFileFromService( string methodName )
+	{
+		string url = ConstructUrl( methodName );
+		return GetResponseFromUrl( url );
+	}	    
+
         public string GetFileResponseFromUrl(string toFileName, string url)
         {
             byte[] responseBytes = GetResponseFromUrl(url);
