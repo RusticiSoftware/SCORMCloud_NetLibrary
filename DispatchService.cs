@@ -230,12 +230,13 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <summary>
         /// Get information about the dispatch named by the given dispatchId parameter.
         /// </summary>
-        /// <param name="dispatchId">The id of the dispatch being accessed.</param>
+        /// <param name="dispatchOrRegistrationId">The id of the dispatch or a registration associated with a dispatch.</param>
+        /// <param name="isRegistrationId">The id of the dispatch being accessed.</param>
         /// <returns>Dispatch Data object.</returns>
-        public DispatchData GetDispatchInfo(string dispatchId)
+        public DispatchData GetDispatchInfo(string dispatchOrRegistrationId, bool isRegistrationId = false)
         {
             ServiceRequest request = new ServiceRequest(configuration);
-            request.Parameters.Add("dispatchid", dispatchId);
+			request.Parameters.Add( isRegistrationId ? "registrationid" : "dispatchid", dispatchOrRegistrationId );
             XmlDocument response = request.CallService("rustici.dispatch.getDispatchInfo");
 
             return new DispatchData((XmlElement)response.GetElementsByTagName("dispatch")[0]);
@@ -248,17 +249,20 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <param name="courseId">The id of the course this dispatch will be associated with.</param>
         /// <param name="tags">A comma separated list of tags to add to this dispatch.</param>
         /// <param name="email">The email address associated with the user creating this dispatch.</param>
-        /// <returns>The id for the newly created dispatch.</returns>
-        public string CreateDispatch(string destinationId, string courseId, string tags, string email)
+		/// <param name="expirationDate">The dispatch's expiration date.</param>
+		/// <param name="registrationCap">The dispatch's registration cap.</param>
+		/// <returns>The id for the newly created dispatch.</returns>
+        public string CreateDispatch(string destinationId, string courseId, string tags, string email, DateTime? expirationDate = null, int? registrationCap = null)
         {
             ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("destinationid", destinationId);
             request.Parameters.Add("courseid", courseId);
-            if (!string.IsNullOrEmpty(tags))
-                request.Parameters.Add("tags", tags);
-            if (!string.IsNullOrEmpty(email))
-                request.Parameters.Add("email", email);
-            XmlDocument response = request.CallService("rustici.dispatch.createDispatch");
+			if ( !string.IsNullOrEmpty( tags ) ) request.Parameters.Add( "tags", tags );
+			if ( !string.IsNullOrEmpty( email ) ) request.Parameters.Add( "email", email );
+			if ( expirationDate != null ) request.Parameters.Add( "expirationdate", expirationDate.GetValueOrDefault().ToString( "yyyyMMddHHmmss" ) );
+			if ( registrationCap != null ) request.Parameters.Add( "registrationcap", registrationCap.GetValueOrDefault().ToString() );
+
+			XmlDocument response = request.CallService( "rustici.dispatch.createDispatch" );
             String dispatchId = ((XmlElement)response
                                     .GetElementsByTagName("dispatchId")[0])
                                     .FirstChild.InnerText;
@@ -299,6 +303,54 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
+        /// Update the selected dispatches in your SCORM Cloud account. Selection of dispatches to update is
+        /// based either on a specific dispatch using the dispatchid parameter, or groups of dispatches using
+        /// the destinationid, courseid, or tags parameters in any combination.
+        /// </summary>
+        /// <param name="dispatchId">The id of the dispatch to update.</param>
+        /// <param name="destinationId">The id of the destination used to select the dispatch group to update.</param>
+        /// <param name="courseId">The id of the course used to select the dispatch group to update.</param>
+        /// <param name="tags">A comma separated list of tags used to select the dispatch group to update. Each dispatch selected will have to be tagged with each tag in the list.</param>
+        /// <param name="expirationDate">Set the expiration date of the selected group of dispatches, or null to make no change.</param>
+        /// <param name="registrationCap">Set the registration cap of the selected group of dispatches, or null to make no change.</param>
+        /// <param name="registrationCount">Set the registration count of the selected group of dispatches, or null to make no change.</param>
+        /// <param name="enabled">Setting "true" or "false" will enable or disable the selected group of dispatches.</param>
+        /// <param name="addTags">A comma separated list of tags to add to the selected dispatches.</param>
+        /// <param name="removeTags">A comma separated list of tags to remove from the selected dispatches.</param>
+        /// <returns>The id for the newly created dispatch.</returns>
+        public void UpdateDispatches( string dispatchId, string destinationId, string courseId, string tags, DateTime? expirationDate, int? registrationCap, int? registrationCount, bool? enabled, bool? allowNewRegistrations, bool? instanced, string addTags, string removeTags )
+		{
+			ServiceRequest request = new ServiceRequest( configuration );
+			if ( !string.IsNullOrEmpty( dispatchId ) )
+				request.Parameters.Add( "dispatchid", dispatchId );
+			if ( !string.IsNullOrEmpty( destinationId ) )
+				request.Parameters.Add( "destinationid", destinationId );
+			if ( !string.IsNullOrEmpty( courseId ) )
+				request.Parameters.Add( "courseid", courseId );
+			if ( !string.IsNullOrEmpty( tags ) )
+				request.Parameters.Add( "tags", tags );
+			if ( enabled.HasValue )
+				request.Parameters.Add( "enabled", enabled.Value );
+			if ( expirationDate != null )
+				request.Parameters.Add( "expirationdate", expirationDate.GetValueOrDefault().ToString( "yyyyMMddHHmmss" ) );
+			if ( registrationCap != null )
+				request.Parameters.Add( "registrationcap", registrationCap.GetValueOrDefault().ToString() );
+			if ( registrationCount != null )
+				request.Parameters.Add( "registrationcount", registrationCount.GetValueOrDefault().ToString() );
+			if ( allowNewRegistrations.HasValue )
+				request.Parameters.Add( "open", allowNewRegistrations.Value );
+			if ( instanced.HasValue )
+				request.Parameters.Add( "instanced", instanced.Value );
+
+			if ( !string.IsNullOrEmpty( addTags ) )
+				request.Parameters.Add( "addtags", addTags );
+			if ( !string.IsNullOrEmpty( removeTags ) )
+				request.Parameters.Add( "removetags", removeTags );
+
+			request.CallService( "rustici.dispatch.updateDispatches" );
+		}        
+
+        /// <summary>
         /// Uses the dispatches selected by the given parameters to create and deliver a package
         /// containing the resources used to import and launch those dispatches in client systems.
         /// This will save a zip file, which in turn contains zip files for each of the selected dispatches.
@@ -324,7 +376,23 @@ namespace RusticiSoftware.HostedEngine.Client
             //Return file path to downloaded file
             return request.GetFileFromService(toFileName, "rustici.dispatch.downloadDispatches");
         }
+        
+        
+        /// <summary>
+        /// Returns a dispatch file in a byte array
+        /// </summary>
+        /// <param name="dispatchId">The id of the dispatch to download.</param>
+        /// <returns>The dispatch file as a byte array.</returns>
+		public byte[] GetDispatchFile( string dispatchId )
+		{
+			ServiceRequest request = new ServiceRequest( configuration );
+			request.Parameters.Add( "dispatchid", dispatchId );
 
+			//Return the file
+			return request.GetFileFromService( "rustici.dispatch.downloadDispatches" );
+		}
+
+        
         /// <summary>
         /// Delete the selected dispatches from your SCORM Cloud account, using the parameters given.
         /// Selection of dispatches to delete is based either on a specific dispatch using the
