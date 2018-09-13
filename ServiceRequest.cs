@@ -1,8 +1,8 @@
 /* Software License Agreement (BSD License)
- * 
+ *
  * Copyright (c) 2010-2011, Rustici Software, LLC
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -13,7 +13,7 @@
  *     * Neither the name of the <organization> nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -77,15 +77,14 @@ namespace RusticiSoftware.HostedEngine.Client
         {
             get
             {
-                 return fileToPost;
+                return fileToPost;
             }
             set
             {
                 if (!File.Exists(value))
                 {
                     throw new ArgumentException(
-                        String.Format("Path provided for FileToPost does not point to an existing file.  Value: '{0}'",
-                                      value));
+                      String.Format("Path provided for FileToPost does not point to an existing file.  Value: '{0}'", value));
                 }
 
                 fileToPost = value;
@@ -117,7 +116,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// Main method for invoking HostedEngine web services based on the 
+        /// Main method for invoking HostedEngine web services based on the
         /// HostedEngine.WebServicesCore engine
         /// </summary>
         /// <param name="methodName">Method name passed on the call to the api</param>
@@ -133,11 +132,11 @@ namespace RusticiSoftware.HostedEngine.Client
             return GetFileResponseFromUrl(toFileName, ConstructUrl(methodName));
         }
 
-	public byte[] GetFileFromService( string methodName )
-	{
-		string url = ConstructUrl( methodName );
-		return GetResponseFromUrl( url );
-	}	    
+        public byte[] GetFileFromService(string methodName)
+        {
+            string url = ConstructUrl(methodName);
+            return GetResponseFromUrl(url);
+        }
 
         public string GetFileResponseFromUrl(string toFileName, string url)
         {
@@ -253,7 +252,7 @@ namespace RusticiSoftware.HostedEngine.Client
         }
 
         /// <summary>
-        /// Given the method name and the parameters and configuration associated 
+        /// Given the method name and the parameters and configuration associated
         /// with this object, generate the full URL for the web service invocation.
         /// </summary>
         /// <param name="methodName">Method name for the HOSTED Engine api call</param>
@@ -266,9 +265,9 @@ namespace RusticiSoftware.HostedEngine.Client
             IDictionary<string, object> parameterMap = new Dictionary<string, object>();
             parameterMap.Add("method", methodName);
             parameterMap.Add("appid", configuration.AppId);
-			parameterMap.Add("origin", configuration.Origin);
+            parameterMap.Add("origin", configuration.Origin);
             parameterMap.Add("ts", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
-			parameterMap.Add("applib", "net");
+            parameterMap.Add("applib", "net");
             foreach(string key in methodParameters.Keys)
             {
                 parameterMap.Add(key, methodParameters[key]);

@@ -66,7 +66,7 @@ namespace RusticiSoftware.HostedEngine.Client
             this.enabled = bool.Parse(dispatchDataElement["enabled"].InnerText);
             if (dispatchDataElement["notes"] != null)
                 this.notes = dispatchDataElement["notes"].InnerText;
-            this.registrationCount = Int32.Parse( dispatchDataElement["registrationcount"].InnerText );
+            this.registrationCount = Int32.Parse(dispatchDataElement["registrationcount"].InnerText);
             this.createdBy = dispatchDataElement["createdBy"].InnerText;
             this.createDate = DateTime.Parse(dispatchDataElement["createDate"].InnerText);
             this.updateDate = DateTime.Parse(dispatchDataElement["updateDate"].InnerText);
