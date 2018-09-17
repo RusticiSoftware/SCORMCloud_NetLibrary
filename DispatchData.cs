@@ -46,6 +46,7 @@ namespace RusticiSoftware.HostedEngine.Client
         private bool enabled;
         private string tags;
         private string notes;
+        private int registrationCount;
         private string createdBy;
         private DateTime createDate;
         private DateTime updateDate;
@@ -65,6 +66,7 @@ namespace RusticiSoftware.HostedEngine.Client
             this.enabled = bool.Parse(dispatchDataElement["enabled"].InnerText);
             if (dispatchDataElement["notes"] != null)
                 this.notes = dispatchDataElement["notes"].InnerText;
+            this.registrationCount = Int32.Parse(dispatchDataElement["registrationcount"].InnerText);
             this.createdBy = dispatchDataElement["createdBy"].InnerText;
             this.createDate = DateTime.Parse(dispatchDataElement["createDate"].InnerText);
             this.updateDate = DateTime.Parse(dispatchDataElement["updateDate"].InnerText);
@@ -161,6 +163,11 @@ namespace RusticiSoftware.HostedEngine.Client
             get { return notes; }
         }
 
+        public int RegistrationCount
+        {
+            get { return registrationCount; }
+        }
+        
         /// <summary>
         /// Who created this dispatch.
         /// </summary>
