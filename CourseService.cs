@@ -153,7 +153,7 @@ namespace RusticiSoftware.HostedEngine.Client
         /// <returns></returns>
         public String GetImportCourseAsyncUrl(string courseId, string redirectUrl)
         {
-            ServiceRequest request = new ServiceRequest(ScormCloud.Configuration);
+            ServiceRequest request = new ServiceRequest(configuration);
             request.Parameters.Add("courseid", courseId);
             if (!String.IsNullOrEmpty(redirectUrl))
                 request.Parameters.Add("redirecturl", redirectUrl);
