@@ -34,6 +34,7 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using System.Threading;
+using System.Collections.Specialized;
 
 namespace RusticiSoftware.HostedEngine.Client
 {
@@ -44,6 +45,7 @@ namespace RusticiSoftware.HostedEngine.Client
     {
         private IDictionary<string, object> methodParameters = new Dictionary<string, object>();
         private string fileToPost = null;
+        private NameValueCollection dataToPost = null;
         private Configuration configuration = null;
         private String engineServiceUrl = null;
 
@@ -91,6 +93,11 @@ namespace RusticiSoftware.HostedEngine.Client
             }
         }
 
+        public NameValueCollection DataToPost 
+        { 
+            get { return dataToPost; } 
+            set { dataToPost = value; } 
+        }
 
         /// <summary>
         /// Server at which to make the request
@@ -186,6 +193,8 @@ namespace RusticiSoftware.HostedEngine.Client
                     using (CustomWebClient wc = new CustomWebClient()) {
                         if (fileToPost != null)
                             responseBytes = wc.UploadFile(url, fileToPost);
+                        else if (dataToPost != null)
+                            responseBytes = wc.UploadValues(url, dataToPost);
                         else
                             responseBytes = wc.DownloadData(url);
                     }
@@ -281,6 +290,14 @@ namespace RusticiSoftware.HostedEngine.Client
                 // Create a query string with URL-encoded values
                 url += (cnt++ == 0 ? "?" : "&") + key + "=" + HttpUtility.UrlEncode(parameterMap[key].ToString());
             }
+
+            if (dataToPost != null) {
+                foreach(string key in dataToPost)
+                {
+                    parameterMap.Add(key, dataToPost[key]);
+                }
+            }
+
             url += "&sig=" + RequestSigner.GetSignatureForRequest(configuration.SecurityKey, parameterMap);
 
             if (url.Length > 2000)
