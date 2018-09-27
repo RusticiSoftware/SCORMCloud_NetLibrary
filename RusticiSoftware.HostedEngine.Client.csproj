@@ -85,6 +85,7 @@
     <Compile Include="ServiceRequest.cs" />
     <Compile Include="UploadService.cs" />
     <Compile Include="XmlUtils.cs" />
+    <Compile Include="UpdateRegistrationSchema.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Types\" />
