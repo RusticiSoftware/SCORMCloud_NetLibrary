@@ -640,7 +640,11 @@ namespace RusticiSoftware.HostedEngine.Client
         /// with the provided url as the src.  This can be used to simulate an "onload"
         /// by using a notificationFrameUrl that's the same domain as the host system and
         /// calling parent.parent.method()</param>
-        public string GetPropertyEditorUrl(string courseId, string stylesheetUrl, string notificationFrameUrl)
+        /// <param name="useLatestEditor">Whether or not to use the latest version of the
+        /// properties editor. We recommend setting this to true, as the new editor supports
+        /// more properties and is used directly on SCORM Cloud's site. Defaults to false
+        /// for backwards compatibility.</param>
+        public string GetPropertyEditorUrl(string courseId, string stylesheetUrl, string notificationFrameUrl, bool useLatestEditor = false)
         {
             // The local parameter map just contains method methodParameters.  We'll
             // now create a complete parameter map that contains the web-service
@@ -650,10 +654,15 @@ namespace RusticiSoftware.HostedEngine.Client
             parameterMap.Add("package", "ApiCourseId|" + courseId);
             parameterMap.Add("appid", configuration.AppId);
             parameterMap.Add("ts", DateTime.UtcNow.ToString("yyyyMMddHHmmss"));
+
             if (!String.IsNullOrEmpty(notificationFrameUrl))
                 parameterMap.Add("notificationframesrc", notificationFrameUrl);
+
             if (!String.IsNullOrEmpty(stylesheetUrl))
                 parameterMap.Add("stylesheet", stylesheetUrl);
+
+            if (useLatestEditor)
+                parameterMap.Add("editor", "latest");
 
             // Construct the url, concatonate all parameters as query string parameters
             string url = configuration.ScormEngineServiceUrl + "/widget";
