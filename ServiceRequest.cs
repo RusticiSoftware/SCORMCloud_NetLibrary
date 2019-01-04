@@ -300,9 +300,6 @@ namespace RusticiSoftware.HostedEngine.Client
 
             url += "&sig=" + RequestSigner.GetSignatureForRequest(configuration.SecurityKey, parameterMap);
 
-            if (url.Length > 2000)
-                throw new ApplicationException("URL > 2000 bytes");
-
             return url;
         }
     }
