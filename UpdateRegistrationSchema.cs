@@ -25,6 +25,12 @@ namespace RusticiSoftware.HostedEngine.Client
         [XmlElement(ElementName = "score")]
         public Double Score { get; set; }
 
+        [XmlElement(ElementName = "firstLaunchDate")]
+        public String FirstLaunchDate { get; set; }
+
+        [XmlElement(ElementName = "completedDate")]
+        public String CompletedDate { get; set; }
+
         [XmlArray(ElementName = "interactions")]
         public List<Interaction> Interactions { get; set; }
     }
