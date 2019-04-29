@@ -94,6 +94,16 @@ namespace RusticiSoftware.HostedEngine.Client
             request.CallService("rustici.registration.createRegistration");
         }
 
+        /// <summary>
+        /// Semantics: This method provides a way to remove the postback settings for a registration.  This effectively disables postbacks for a registration for which they were previously configured.
+        /// </summary>
+        /// <param name="registrationId">Unique Identifier for the registration</param>
+        public void DeletePostbackInfo(string registrationId)
+        {
+            ServiceRequest request = new ServiceRequest(configuration);
+            request.Parameters.Add("regid", registrationId);
+            request.CallService("rustici.registration.deletePostbackInfo");
+        }
 
         /// <summary>
         /// Semantics: This method provides a way to update the postback settings for a registration created with the createRegistration call. If you wish to change an authenticated postback to an unauthenticated postback, please call this method with only a url specified.
